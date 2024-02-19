@@ -1,0 +1,31 @@
+.header {
+  max-height: 65px;
+  // background-color:aqua;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid rgb(209, 205, 205);
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  margin: 0 40px;
+  gap: 20px;
+}
+
+.portret {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; 
+  overflow: hidden; 
+}
+
+.text {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.owl {
+  width: 60px;
+  height: 60px;
+}
