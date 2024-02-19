@@ -38,9 +38,8 @@
         {
             "js": "never",
             "ts": "never",
-            ".tsx": "never"
+            "tsx": "never"
         }
     ]
-    // "linebreak-style": ["error", "unix"],
   }
   }
