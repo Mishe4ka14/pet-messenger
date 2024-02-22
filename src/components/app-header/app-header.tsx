@@ -14,8 +14,8 @@ const AppHeader = (): JSX.Element => (
         <p className={styles.text}>Hedwig</p>
       </div>
       <div className={styles.box}>
-        <NotificationsIcon fontSize={'large'}/>
-        <Avatar src={portret} sx={{ width: 50, height: 50 }}/>
+        <NotificationsIcon className={styles.bell} fontSize='large'/>
+        <Avatar className={styles.portret} src={portret} sx={{ width: 50, height: 50 }}/>
       </div>
     </header>
 );

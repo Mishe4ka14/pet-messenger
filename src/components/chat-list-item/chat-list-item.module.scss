@@ -6,8 +6,16 @@ $zero: 0;
 
 .container {
   @include box();
+  box-sizing: border-box;
   max-width: 400px;
-  margin-bottom: 5%;
+  margin-bottom: 4%;
+  padding: 5px 5px;
+  cursor: pointer;
+  border: 1px solid white;
+  &:hover {
+    border: 1px solid gray;
+    border-radius: 30px
+  }
 }
 
 .box{
@@ -16,7 +24,6 @@ $zero: 0;
   align-items: start;
   margin-left: 25px;
 }
-
 
 .name {
   padding: $zero;
