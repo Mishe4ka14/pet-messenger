@@ -3,7 +3,7 @@
 import { Link } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import portret from '../../assets/portret.svg';
+import ava from '../../assets/pretty-elf.jpg';
 import icon from '../../assets/svg (1).svg';
 import styles from './app-header.module.scss';
 
@@ -15,7 +15,7 @@ const AppHeader = (): JSX.Element => (
       </div>
       <div className={styles.box}>
         <NotificationsIcon className={styles.bell} fontSize='large'/>
-        <Avatar className={styles.portret} src={portret} sx={{ width: 50, height: 50 }}/>
+        <Avatar className={styles.portret} src={ava} sx={{ width: 50, height: 50 }}/>
       </div>
     </header>
 );

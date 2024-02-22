@@ -3,6 +3,7 @@
 import AppHeader from '../../components/app-header/app-header';
 import ChatList from '../../components/chat-list/chat-list';
 import StartPanel from '../../components/start-panel/start-panel';
+import Chat from '../../components/chat/chat';
 import styles from './home-page.module.scss';
 
 const HomePage = ():JSX.Element => (
@@ -11,7 +12,8 @@ const HomePage = ():JSX.Element => (
       <AppHeader/>
       <main className={styles.main}>
           <ChatList/>
-          <StartPanel/>
+          {/* <StartPanel/> */}
+          <Chat/>
       </main>
     </div>
 );

@@ -9,13 +9,13 @@ const StartPanel = (): JSX.Element => (
     <div className={styles.container}>
       <h2 className={styles.text}>Start a new chat or select from the list to send Hedwik</h2>
       <div className={styles.search_input_container}>
-      <input
-        type="text"
-        placeholder="Search or start a new chat"
-        className={styles.search_input}
-      />
-      <button className={styles.search_button}>New Chat</button>
-    </div>
+        <input
+          type="text"
+          placeholder="Search or start a new chat"
+          className={styles.search_input}
+        />
+        <button className={styles.search_button}>New Chat</button>
+      </div>
     </div>
   </div>
 );
