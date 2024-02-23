@@ -11,7 +11,7 @@ const AppHeader = (): JSX.Element => (
     <header className={styles.header}>
       <div className={styles.box}>
         <img className={styles.owl} src={icon}/>
-        <p className={styles.text}>Hedwig</p>
+        <h1 className={styles.text}>Hedwig</h1>
       </div>
       <div className={styles.box}>
         <NotificationsIcon className={styles.bell} fontSize='large'/>

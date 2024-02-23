@@ -12,8 +12,8 @@ const HomePage = ():JSX.Element => (
       <AppHeader/>
       <main className={styles.main}>
           <ChatList/>
-          {/* <StartPanel/> */}
-          <Chat/>
+          <StartPanel/>
+          {/* <Chat/> */}
       </main>
     </div>
 );
