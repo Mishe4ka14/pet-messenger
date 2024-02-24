@@ -41,6 +41,7 @@
             "tsx": "never"
         }
     ],
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "max-len": ["error", { "code": 120 }]
   }
   }
