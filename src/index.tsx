@@ -7,6 +7,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/home-page/home-page';
 import store from './lib/store';
+import RegistrationPage from './pages/registration-page/registration-page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -14,7 +15,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <HomePage/>
+      {/* <HomePage/> */}
+      <RegistrationPage/>
     </Provider>
   </React.StrictMode>,
 );

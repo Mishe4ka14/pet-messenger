@@ -1,0 +1,28 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 8%;
+}
+
+.input {
+  border-radius: 15px;
+}
+
+.button {
+  background-color: rgb(113, 178, 238);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 600px;
+  height: 40px;
+  margin-left: 10px;
+  &:hover {
+    background-color: rgb(29, 120, 240);
+  }
+}
