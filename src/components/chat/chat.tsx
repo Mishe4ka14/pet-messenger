@@ -8,8 +8,8 @@ import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
 import Message from '../message/message';
 import ava from '../../assets/portret.svg';
-import { RootState } from '../../services/reducers/index';
 import { IMessage } from '../../services/types/types';
+import { RootState } from '../../lib/store';
 
 const Chat = (): JSX.Element => {
   const { messages } = useSelector((store: RootState) => store.messages);

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './chat-input.module.scss';
 import ava from '../../assets/pretty-elf.jpg';
-import { ADD_MESSAGE, IAddMessageAction, addMessage } from '../../services/actions/messages';
+import { addMessage } from '../../lib/features/messages/messages-slice';
 
 const ChatInput = ():JSX.Element => {
   const dispatch = useDispatch();

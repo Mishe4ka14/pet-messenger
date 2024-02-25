@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/home-page/home-page';
-import store from './services/reducers';
+import store from './lib/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
