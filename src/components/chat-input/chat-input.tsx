@@ -14,8 +14,11 @@ const ChatInput = ():JSX.Element => {
     setInputValue(event.target.value);
   };
 
-  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // функция отправки сообщения
+  const sendMessage = (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+
+    if (!inputValue) return;
 
     const newMessage = {
       _id: Math.random().toString(),
@@ -24,18 +27,26 @@ const ChatInput = ():JSX.Element => {
       isMine: true,
     };
 
-    e.preventDefault();
     dispatch(addMessage(newMessage));
     setInputValue('');
+  };
+
+  // функция отправки сообщения на enter
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendMessage();
+    }
   };
 
   return (
     <div className={styles.box}>
       <Avatar src={ava} sx={{ width: 70, height: 70 }}/>
-      <form className={styles.container} onClick={sendMessage}>
+      <form className={styles.container} onSubmit={sendMessage}>
         <TextField
         value={inputValue}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         className={styles.input}
               id="standard-textarea"
               placeholder="Type a message"
@@ -43,7 +54,7 @@ const ChatInput = ():JSX.Element => {
               variant="standard"
               rows={2}
             />
-          <button className={styles.button}>Send</button>
+          <button className={styles.button} type='submit'>Send</button>
       </form>
     </div>
   );
