@@ -24,7 +24,7 @@ const RegistrationPage = (): JSX.Element => {
           <FormLabel>Email</FormLabel>
           <Input
             placeholder="Email"
-            type='email'
+            // type='email'
             variant="soft"
             value={values.email}
             sx={{ width: 600, height: 60 }}
@@ -50,7 +50,7 @@ const RegistrationPage = (): JSX.Element => {
           <FormLabel>Password</FormLabel>
           <Input
             placeholder="Password"
-            type='password'
+            // type='password'
             variant="soft"
             value={values.password}
             sx={{ width: 600, height: 60 }}
