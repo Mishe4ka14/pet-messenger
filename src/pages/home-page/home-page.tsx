@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+import { Outlet } from 'react-router-dom';
 import AppHeader from '../../components/app-header/app-header';
 import ChatList from '../../components/chat-list/chat-list';
 import StartPanel from '../../components/start-panel/start-panel';
@@ -12,8 +13,7 @@ const HomePage = ():JSX.Element => (
       <AppHeader/>
       <main className={styles.main}>
         <ChatList/>
-        {/* <StartPanel/> */}
-        <Chat/>
+        <Outlet/>
       </main>
     </div>
 );

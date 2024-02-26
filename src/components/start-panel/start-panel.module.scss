@@ -55,17 +55,17 @@ $border-radius-medium: 20px;
   }
 
   .search_button {
-    background-color: rgb(252, 216, 34);
-    color: black;
+    background-color: rgb(178, 218, 255);
+    color: rgb(31, 34, 35);
     font-weight: bold;
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
     cursor: pointer;
     height: 50px;
-
+    transition: background-color 0.3s ease;
     &:hover {
-      background-color: rgb(185, 156, 16);
+      background-color: rgb(96, 164, 254);
     }
   }
 }

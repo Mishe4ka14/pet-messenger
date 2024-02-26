@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import FormControl from '@mui/joy/FormControl';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './registration-page.module.scss';
 import useInputHandlers from '../../hooks/use-input';
+import icon from '../../assets/svg (1).svg';
 
 const RegistrationPage = (): JSX.Element => {
   const { values, handleInputChange } = useInputHandlers({
@@ -17,9 +18,10 @@ const RegistrationPage = (): JSX.Element => {
 
   return (
     <>
-      <AppHeader/>
+      {/* <AppHeader/> */}
       <div className={styles.page}>
-        <h2>Create your account</h2>
+      <img className={styles.owl} src={icon}/>
+        <h2 className={styles.text}>Create your account</h2>
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Input
@@ -27,7 +29,7 @@ const RegistrationPage = (): JSX.Element => {
             // type='email'
             variant="soft"
             value={values.email}
-            sx={{ width: 600, height: 60 }}
+            sx={{ width: 300, height: 50 }}
             className={styles.input}
             onChange={handleInputChange}
             name='email'
@@ -39,7 +41,7 @@ const RegistrationPage = (): JSX.Element => {
             placeholder="Name"
             variant="soft"
             value={values.name}
-            sx={{ width: 600, height: 60 }}
+            sx={{ width: 300, height: 50 }}
             className={styles.input}
             onChange={handleInputChange}
             name='name'
@@ -53,13 +55,15 @@ const RegistrationPage = (): JSX.Element => {
             // type='password'
             variant="soft"
             value={values.password}
-            sx={{ width: 600, height: 60 }}
+            sx={{ width: 300, height: 50 }}
             className={styles.input}
             onChange={handleInputChange}
             name='password'
             />
         </FormControl>
-        <button className={styles.button} type='submit' disabled >Next</button>
+        <Link to='/'>
+          <button className={styles.button} type='submit'>Continue</button>
+        </Link>
       </div>
     </>
   );

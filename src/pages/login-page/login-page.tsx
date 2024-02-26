@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import FormControl from '@mui/joy/FormControl';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { FormLabel, FormHelperText } from '@mui/joy';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login-page.module.scss';
 import useInputHandlers from '../../hooks/use-input';
+import icon from '../../assets/svg (1).svg';
 
 const LoginPage = (): JSX.Element => {
   const { values, handleInputChange } = useInputHandlers({
@@ -16,9 +17,10 @@ const LoginPage = (): JSX.Element => {
 
   return (
     <>
-      <AppHeader/>
+      {/* <AppHeader/> */}
       <div className={styles.page}>
-      <h2>Welcome back</h2>
+      <img className={styles.owl} src={icon}/>
+      <h2 className={styles.text}>Welcome back</h2>
         <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
@@ -26,7 +28,7 @@ const LoginPage = (): JSX.Element => {
               // type='email'
               variant="soft"
               value={values.email}
-              sx={{ width: 600, height: 60 }}
+              sx={{ width: 300, height: 50 }}
               className={styles.input}
               onChange={handleInputChange}
               name='email'
@@ -39,14 +41,25 @@ const LoginPage = (): JSX.Element => {
               // type='email'
               variant="soft"
               value={values.password}
-              sx={{ width: 600, height: 60 }}
+              sx={{ width: 300, height: 50 }}
               className={styles.input}
               onChange={handleInputChange}
               name='password'
               />
-            <FormHelperText>Forgot your password?</FormHelperText>
+              <Link className={styles.lil_text} to='/reset-password'>
+                <FormHelperText className={styles.lil_text}>Forgot your password?</FormHelperText>
+              </Link>
           </FormControl>
-          <button className={styles.button} type='submit' disabled >Next</button>
+          <FormControl>
+            <Link to='/'>
+              <button className={styles.button} type='submit'>Continue</button>
+            </Link>
+            <FormHelperText>Don't have an account?
+              <Link className={styles.lil_text} to='/register'>
+                <p>Sign up</p>
+              </Link>
+            </FormHelperText>
+          </FormControl>
       </div>
     </>
   );

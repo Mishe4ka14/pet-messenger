@@ -35,8 +35,8 @@ border-radius: $border-radius-medium;
 }
 
 .button {
-  background-color: rgb(252, 216, 34);
-  color: black;
+  background-color: rgb(178, 218, 255);
+  color: rgb(2, 47, 89);
   font-weight: bold;
   border: none;
   border-radius: 10px;
@@ -44,7 +44,8 @@ border-radius: $border-radius-medium;
   cursor: pointer;
   height: 50px;
   margin-left: 10px;
+  transition: background-color 0.3s ease;
   &:hover {
-    background-color: rgb(185, 156, 16);
+    background-color: rgb(29, 120, 240);
   }
 }
