@@ -1,0 +1,40 @@
+@mixin box {
+    display: flex;
+    align-items: center;
+}
+$zero: 0;
+
+.container {
+  @include box();
+  box-sizing: border-box;
+  max-width: 400px;
+  margin-bottom: 4%;
+  padding: 5px 5px;
+  cursor: pointer;
+  border: 1px solid white;
+  &:hover {
+    border: 1px solid gray;
+    border-radius: 30px
+  }
+}
+
+.box{
+  @include box();
+  flex-direction: column;
+  align-items: start;
+  margin-left: 25px;
+}
+
+.name {
+  padding: $zero;
+  margin: 10px 0 0;
+}
+.text {
+  padding: $zero;
+  margin: $zero;
+}
+
+.link {
+  color: black;
+  text-decoration: none;
+}

@@ -1,0 +1,47 @@
+.header {
+  max-height: 65px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid rgb(209, 205, 205);
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  margin: 0 40px;
+  gap: 20px;
+}
+
+.portret {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; 
+  overflow: hidden; 
+  transition: transform 0.3s ease; 
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.text {
+  font-weight: 900;
+  font-size: 23px;
+}
+
+.owl {
+  width: 60px;
+  height: 60px;
+}
+
+.bell {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: width 1s ease, height 1s ease; 
+
+  &:hover {
+    width: 50px;
+    height: 50px;
+  }
+}

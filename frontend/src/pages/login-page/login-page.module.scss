@@ -1,0 +1,47 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 12%;
+}
+
+.input {
+  border-radius: 15px;
+}
+
+.button {
+  background-color: rgb(113, 178, 238);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 300px;
+  height: 40px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: rgb(29, 120, 240);
+  }
+}
+
+.text {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.lil_text {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: rgb(113, 178, 238);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  &:hover {
+    color: rgb(29, 120, 240);
+  }
+}
