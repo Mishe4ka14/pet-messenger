@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { createUser } from './controllers/user';
+const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
 
@@ -8,9 +9,13 @@ mongoose.connect('mongodb://localhost:27017/pet-mess-db');
 
 const app = express();
 
+
+
+app.use(cors());
+
 app.use(express.json());
 
-app.post('/register', createUser);
+app.post('/signup', createUser);
 
 app.get('/', (req, res) => {
   res.send('HELLO! Это рабочий сервер Express!!!!!');

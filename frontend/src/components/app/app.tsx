@@ -19,7 +19,7 @@ const App = ():JSX.Element => {
           <Route path='/chat' element={<Chat/>}/>
         </Route>
         <Route path='/login' element={<LoginPage/>}/>
-        <Route path='/register' element={<RegistrationPage/>}/>
+        <Route path='/signup' element={<RegistrationPage/>}/>
         <Route path='/reset-password' element={<ResetPasswordPage/>}/>
       </Routes>
     </>

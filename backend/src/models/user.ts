@@ -22,7 +22,7 @@ export const userSchema = new mongoose.Schema<IUser>(
     },
     avatar: {
       type: String,
-      default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      default: 'https://yobte.ru/uploads/posts/2019-11/polumna-lavgud-42-foto-1.jpg',
       validate: {
         validator(v: string) {
           return /^(https?:\/\/)?(www\.)?[\w-]+(\.[\w-]+)+[/#?]?.*$/.test(v);

@@ -8,3 +8,11 @@ export interface IMessage {
   owner: string;
   isMine: boolean;
 }
+
+export interface IUser {
+  name?: string,
+  password: string,
+  email: string,
+  about?: string,
+  avatar?: string,
+}
