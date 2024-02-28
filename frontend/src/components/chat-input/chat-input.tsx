@@ -2,14 +2,22 @@
 /* eslint-disable no-unused-vars */
 import { Avatar, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './chat-input.module.scss';
 import ava from '../../assets/pretty-elf.jpg';
 import { addMessage } from '../../lib/features/messages/messages-slice';
+import { RootState } from '../../lib/store';
 
 const ChatInput = ():JSX.Element => {
+  // получаем аватар пользователя
+  const { user } = useSelector((state: RootState) => state.user);
+  const avatar = user?.avatar;
+  console.log(user);
+
   const dispatch = useDispatch();
+
   const [inputValue, setInputValue] = useState('');
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -41,7 +49,7 @@ const ChatInput = ():JSX.Element => {
 
   return (
     <div className={styles.box}>
-      <Avatar src={ava} sx={{ width: 70, height: 70 }}/>
+      <Avatar src={avatar} sx={{ width: 70, height: 70 }}/>
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
         value={inputValue}

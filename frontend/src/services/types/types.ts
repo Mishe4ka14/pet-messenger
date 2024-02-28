@@ -1,3 +1,5 @@
+import { JSX } from 'react';
+
 export interface TextObject {
   [name: string]: string;
 }
@@ -15,4 +17,9 @@ export interface IUser {
   email: string,
   about?: string,
   avatar?: string,
+}
+
+export interface IModal {
+  onClose(): void;
+  children: JSX.Element;
 }

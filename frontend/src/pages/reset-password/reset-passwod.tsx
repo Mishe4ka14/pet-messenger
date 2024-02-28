@@ -16,7 +16,7 @@ const ResetPasswordPage = (): JSX.Element => {
 
   return (
     <>
-      <AppHeader/>
+      {/* <AppHeader/> */}
       <div className={styles.page}>
       <h2>Reset your password</h2>
       <p>Enter the email address you used to sign up for Hedwik</p>

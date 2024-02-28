@@ -6,10 +6,19 @@ import RegistrationPage from '../../pages/registration-page/registration-page';
 import ResetPasswordPage from '../../pages/reset-password/reset-passwod';
 import StartPanel from '../start-panel/start-panel';
 import Chat from '../chat/chat';
+import { useState } from 'react';
 
 const App = ():JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
+  // Функция для открытия модального окна при нажатии на аватарку
+  const handleAvatarClick = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <>

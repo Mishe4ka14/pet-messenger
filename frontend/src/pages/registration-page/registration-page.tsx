@@ -33,7 +33,8 @@ const RegistrationPage = (): JSX.Element => {
       };
       console.log('все гуд')
       await dispatch(registerUser(userData))
-        .then(() => console.log('все гуд'));
+        .then((data) => console.log(data))
+        .then(() => navigate('/'));
     }
   };
 
