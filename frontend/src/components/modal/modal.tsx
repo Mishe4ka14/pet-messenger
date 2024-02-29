@@ -6,7 +6,7 @@ import { Close } from '@mui/icons-material';
 import { useDispatch } from '../../hooks/hooks';
 import { IModal } from '../../services/types/types';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import styles from './profile-modal.module.scss';
+import styles from './modal.module.scss';
 
 const modalRoot = document.getElementById('modal-root');
 
@@ -39,7 +39,9 @@ const Modal = ({ children, onClose }: IModal): JSX.Element => {
      <>
       <ModalOverlay closeModal={(() => handlerClose())}/>
       <div className={styles.container}>
-        <div className={styles.close}><Close type='primary' onClick={(() => handlerClose())}/></div>
+        <div className={styles.close}>
+          <Close sx={{ width: 25, height: 25 }} type='primary' onClick={(() => handlerClose())}/>
+        </div>
         {children}
       </div>
     </>
