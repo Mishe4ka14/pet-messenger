@@ -2,7 +2,6 @@
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../lib/store';
 import { addMessage } from '../../lib/features/messages/messages-slice';
-import registerUser from '../../lib/features/auth/auth-api';
 import { Action } from 'redux';
 
 // Определяем тип для обычных действий (action creators)

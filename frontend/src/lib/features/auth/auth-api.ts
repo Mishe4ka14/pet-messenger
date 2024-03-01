@@ -1,19 +1,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IUser } from '../../../services/types/types';
+import {
+  IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo,
+} from '../../../services/types/types';
 
-export interface RegisterResponse {
-  email: string,
-  password: string,
-  name: string,
-  about: string,
-  _id: string,
-  avatar: string,
-}
-
-const registerUser = createAsyncThunk<
-  RegisterResponse,
+export const registerUser = createAsyncThunk<
+  IRegisterResponse,
   IUser,
   { rejectValue: string }
 >(
@@ -34,10 +27,36 @@ const registerUser = createAsyncThunk<
 
       return await response.json();
     } catch (error: any) {
+      console.error('Error: ', error);
       // Обрабатываем ошибку и возвращаем rejectWithValue
       return rejectWithValue(error.message);
     }
   },
 );
 
-export default registerUser;
+export const updateUser = createAsyncThunk<
+IUpdateUserResponse,
+IUpdateInfo,
+{ rejectValue: string }
+>(
+  'user/updateInfo',
+  async (userData: IUpdateInfo, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:3000/user/me', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user info');
+      }
+      return await response.json();
+    } catch (error: any) {
+      console.error('Error: ', error);
+      return rejectWithValue(error.message);
+    }
+  },
+);

@@ -12,7 +12,7 @@ import styles from './registration-page.module.scss';
 import { useDispatch } from '../../hooks/hooks';
 import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
-import registerUser from '../../lib/features/auth/auth-api';
+import { registerUser } from '../../lib/features/auth/auth-api';
 import { AppDispatch } from '../../services/types';
 import { RootState } from '../../lib/store';
 

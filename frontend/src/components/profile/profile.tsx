@@ -7,13 +7,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../hooks/hooks';
 import styles from './profile.module.scss';
-import ava from '../../assets/pretty-elf.jpg';
+import { AppDispatch } from '../../services/types';
 import useInputHandlers from '../../hooks/use-input';
-import registerUser from '../../lib/features/auth/auth-api';
 import getLocalStorage from '../../hooks/local-storage';
 import { TUser } from '../../services/types/types';
+import { updateUser } from '../../lib/features/auth/auth-api';
 
 const Profile = (): JSX.Element => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
   const { values, handleInputChange } = useInputHandlers({
@@ -28,6 +29,26 @@ const Profile = (): JSX.Element => {
     navigate('/signup');
   };
 
+  const handleChangeInfo = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (values.password || values.name || values.avatar) {
+      const userData = {
+        avatar: values.avatar,
+        name: values.name,
+        password: values.password,
+      };
+
+      try {
+        const { payload: newUser } = await dispatch(updateUser(userData));
+
+        localStorage.setItem('user', JSON.stringify(newUser));
+      } catch (error) {
+        console.error('Failed to update user info:', error);
+      }
+    }
+  };
+
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
@@ -37,7 +58,7 @@ const Profile = (): JSX.Element => {
           <p className={styles.subtitle}>Koroleva semi korolevstv</p>
         </div>
       </div>
-      <form className={styles.edit}>
+      <form className={styles.edit} onSubmit={handleChangeInfo}>
         <p className={styles.text}>Edit Profile</p>
         <FormControl>
           <FormLabel>Name</FormLabel>

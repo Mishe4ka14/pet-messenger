@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { createSlice } from '@reduxjs/toolkit';
 import { IUser } from '../../../services/types/types';
-import registerUser from './auth-api';
+import {registerUser, updateUser} from './auth-api';
 
 interface IUserState {
   user: IUser | null
@@ -21,6 +21,12 @@ const userSlice = createSlice({
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       // Обработка ошибки
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      // state.user = action.payload;
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
+      // Обработка ошибки при обновлении информации о пользователе
     });
   },
 });

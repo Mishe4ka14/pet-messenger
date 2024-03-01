@@ -19,9 +19,31 @@ export interface IUser {
   avatar?: string,
 }
 
+export interface IUpdateInfo {
+  name?: string,
+  password?: string,
+  avatar?: string,
+}
+
 export interface IModal {
   onClose(): void;
   children: JSX.Element;
+}
+
+export interface IRegisterResponse {
+  email: string,
+  password: string,
+  name: string,
+  about: string,
+  _id: string,
+  avatar: string,
+}
+
+export interface IUpdateUserResponse {
+  password?: string,
+  name?: string,
+  _id?: string,
+  avatar?: string,
 }
 
 export type TUser = IUser | null;
