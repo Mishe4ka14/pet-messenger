@@ -7,6 +7,7 @@ interface IUserState {
   user: IUser | null
 }
 
+
 const initialState: IUserState = {
   user: null,
 };
@@ -23,7 +24,7 @@ const userSlice = createSlice({
       // Обработка ошибки
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
-      // state.user = action.payload;
+      console.log('все окк')
     });
     builder.addCase(updateUser.rejected, (state, action) => {
       // Обработка ошибки при обновлении информации о пользователе

@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { createUser } from './controllers/user';
+import userRouter from './routes/user';
+
 const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
@@ -20,6 +22,8 @@ app.post('/signup', createUser);
 app.get('/', (req, res) => {
   res.send('HELLO! Это рабочий сервер Express!!!!!');
 });
+
+app.use('/user', userRouter)
 
 app.listen(PORT, () => {
     // Если всё работает, консоль покажет, какой порт приложение слушает

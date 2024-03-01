@@ -23,9 +23,48 @@ export const createUser = async (req: Request, res: Response) => {
       about,
     });
 
-    res.status(201).json(user);
+    res.status(201).json({
+      email: user.email,
+      name: user.name,
+      _id: user._id,
+      avatar: user.avatar,
+      about: user.about,
+    });
   } catch (error) {
     console.error('Ошибка при создании пользователя:', error);
     res.status(500).json({ error: 'Внутренняя ошибка сервера' });
   }
 };
+
+export const changeUserInfo = async (req: Request, res: Response) => {
+  try {
+    const {
+      name, avatar, password, _id,
+    } = req.body;
+
+        // создаем объект с полями, которые будут обновлены
+    const updatedFields: { [key: string]: any } = {};
+
+    if (name) {
+      updatedFields.name = name;
+    }
+    if (avatar) {
+      updatedFields.avatar = avatar;
+    }
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedFields.password = hashedPassword;
+    }
+
+    const newUser = await User.findByIdAndUpdate(_id, updatedFields, { new: true });
+
+    res.status(200).json(newUser);
+  } catch (error) {
+    console.error('Ошибка при создании пользователя:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+

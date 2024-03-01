@@ -17,6 +17,7 @@ export interface IUser {
   email: string,
   about?: string,
   avatar?: string,
+  _id?: string,
 }
 
 export interface IUpdateInfo {

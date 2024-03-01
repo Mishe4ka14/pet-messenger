@@ -23,6 +23,7 @@ const Profile = (): JSX.Element => {
 
   // получаем данные юзера из хранилища
   const user: TUser = getLocalStorage('user');
+  console.log(user?._id);
 
   const logOut = () => {
     localStorage.removeItem('user');
@@ -37,12 +38,15 @@ const Profile = (): JSX.Element => {
         avatar: values.avatar,
         name: values.name,
         password: values.password,
+        _id: user?._id,
       };
 
       try {
         const { payload: newUser } = await dispatch(updateUser(userData));
 
         localStorage.setItem('user', JSON.stringify(newUser));
+        const NEW: TUser = getLocalStorage('user');
+        console.log(NEW);
       } catch (error) {
         console.error('Failed to update user info:', error);
       }
