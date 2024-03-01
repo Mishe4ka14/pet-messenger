@@ -3,19 +3,13 @@
 import { Avatar, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch } from 'redux';
 import styles from './chat-input.module.scss';
 import ava from '../../assets/pretty-elf.jpg';
 import { addMessage } from '../../lib/features/messages/messages-slice';
 import { RootState } from '../../lib/store';
 
-const ChatInput = ():JSX.Element => {
-  // получаем аватар пользователя
-  const { user } = useSelector((state: RootState) => state.user);
-  const avatar = user?.avatar;
-  console.log(user);
-
-  const dispatch = useDispatch();
-
+const ChatInput = ({ dispatch }: { dispatch: Dispatch }):JSX.Element => {
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +43,7 @@ const ChatInput = ():JSX.Element => {
 
   return (
     <div className={styles.box}>
-      <Avatar src={avatar} sx={{ width: 70, height: 70 }}/>
+      <Avatar src={ava} sx={{ width: 70, height: 70 }}/>
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
         value={inputValue}

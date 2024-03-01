@@ -9,11 +9,13 @@ import ava from '../../assets/pretty-elf.jpg';
 import icon from '../../assets/svg (1).svg';
 import styles from './app-header.module.scss';
 import { RootState } from '../../lib/store';
+import getLocalStorage from '../../hooks/local-storage';
+import { IUser } from '../../services/types/types';
+
+type TUser = IUser | null;
 
 const AppHeader = ({ onAvatarClick }: { onAvatarClick: () => void }): JSX.Element => {
-  const { user } = useSelector((state: RootState) => state.user);
-
-  const avatar = user?.avatar;
+  const user: TUser = getLocalStorage('user');
 
   return (
       <header className={styles.header}>
@@ -23,7 +25,8 @@ const AppHeader = ({ onAvatarClick }: { onAvatarClick: () => void }): JSX.Elemen
         </div>
         <div className={styles.box}>
           <NotificationsIcon className={styles.bell} fontSize='large'/>
-          <Avatar className={styles.portret} src={avatar} sx={{ width: 50, height: 50 }} onClick={onAvatarClick}/>
+          <Avatar className={styles.portret} src={user?.avatar} sx={{ width: 50, height: 50 }}
+           onClick={onAvatarClick}/>
         </div>
       </header>
   );

@@ -13,18 +13,13 @@ import Modal from '../../components/modal/modal';
 import Profile from '../../components/profile/profile';
 
 const HomePage = ():JSX.Element => {
-  const { user } = useSelector((state: RootState) => state.user);
-  const avatar = user?.avatar;
-  console.log(user);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  // const [isModalOpenMM, setIsModalOpenMM] = useState<boolean>(false);
+
   // Функция для открытия попапа с профилем пользователя
   const handleAvatarClick = () => {
     setIsModalOpen(true);
   };
   return (
-
       <div className={styles.app}>
         <AppHeader onAvatarClick={handleAvatarClick}/>
         <main className={styles.main}>

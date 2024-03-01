@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import { Avatar } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
@@ -12,6 +12,7 @@ import { IMessage } from '../../services/types/types';
 import { RootState } from '../../lib/store';
 
 const Chat = (): JSX.Element => {
+  const dispatch = useDispatch();
   const { messages } = useSelector((store: RootState) => store.messages);
   const [chatMessages, setChatMessages] = useState<IMessage[]>(messages);
 
@@ -38,7 +39,7 @@ const Chat = (): JSX.Element => {
               />))}
       </div>
         </ul>
-      <ChatInput/>
+      <ChatInput dispatch={dispatch}/>
     </div>
   );
 };

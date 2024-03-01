@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from './message.module.scss';
 
 interface MessageProps {

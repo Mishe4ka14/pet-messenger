@@ -33,7 +33,12 @@ const RegistrationPage = (): JSX.Element => {
       };
       console.log('все гуд')
       await dispatch(registerUser(userData))
-        .then((data) => console.log(data))
+        .then((data) => 
+        {
+          const user = data.payload;
+          localStorage.setItem('user', JSON.stringify(user))
+        }
+        )
         .then(() => navigate('/'));
     }
   };

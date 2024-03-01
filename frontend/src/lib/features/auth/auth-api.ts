@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser } from '../../../services/types/types';
 
-interface RegisterResponse {
+export interface RegisterResponse {
   email: string,
   password: string,
   name: string,
@@ -11,9 +13,9 @@ interface RegisterResponse {
 }
 
 const registerUser = createAsyncThunk<
-RegisterResponse, // Тип данных, возвращаемых сервером после успешной регистрации
-IUser, // Тип данных, передаваемых в функцию для регистрации пользователя
-{ rejectValue: string } // Тип данных для конфигурации обработчика ошибок
+  RegisterResponse,
+  IUser,
+  { rejectValue: string }
 >(
   'user/register',
   async (userData: IUser, { rejectWithValue }) => {
@@ -32,6 +34,7 @@ IUser, // Тип данных, передаваемых в функцию для
 
       return await response.json();
     } catch (error: any) {
+      // Обрабатываем ошибку и возвращаем rejectWithValue
       return rejectWithValue(error.message);
     }
   },

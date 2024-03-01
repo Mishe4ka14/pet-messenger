@@ -23,3 +23,5 @@ export interface IModal {
   onClose(): void;
   children: JSX.Element;
 }
+
+export type TUser = IUser | null;

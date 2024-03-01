@@ -1,26 +1,39 @@
+/* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import {
   Avatar, FormControl, FormLabel, Input,
 } from '@mui/joy';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../hooks/hooks';
 import styles from './profile.module.scss';
 import ava from '../../assets/pretty-elf.jpg';
 import useInputHandlers from '../../hooks/use-input';
+import registerUser from '../../lib/features/auth/auth-api';
+import getLocalStorage from '../../hooks/local-storage';
+import { TUser } from '../../services/types/types';
 
 const Profile = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const { values, handleInputChange } = useInputHandlers({
     password: '', name: '', avatar: '',
   });
 
-  const dispatch = useDispatch;
+  // получаем данные юзера из хранилища
+  const user: TUser = getLocalStorage('user');
+
+  const logOut = () => {
+    localStorage.removeItem('user');
+    navigate('/signup');
+  };
 
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
-        <Avatar sx={{ width: 100, height: 100 }} src={ava}/>
+        <Avatar sx={{ width: 100, height: 100 }} src={user?.avatar}/>
         <div className={styles.name}>
-          <h3 className={styles.title}>Alena Prekrasnaya</h3>
+          <h3 className={styles.title}>{user?.name}</h3>
           <p className={styles.subtitle}>Koroleva semi korolevstv</p>
         </div>
       </div>
@@ -63,6 +76,7 @@ const Profile = (): JSX.Element => {
             />
         </FormControl>
         <button className={styles.button} type='submit'>Save changes</button>
+        <button className={styles.button} type='button' onClick={logOut}>Log out</button>
       </form>
     </div>
   );
