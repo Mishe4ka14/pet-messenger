@@ -3,22 +3,42 @@
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import FormControl from '@mui/joy/FormControl';
-import { useState } from 'react';
 import { FormLabel, FormHelperText } from '@mui/joy';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './login-page.module.scss';
 import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
+import { AppDispatch } from '../../services/types';
+import { useDispatch } from '../../hooks/hooks';
+import { loginUser } from '../../lib/features/auth/auth-api';
 
 const LoginPage = (): JSX.Element => {
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { values, handleInputChange } = useInputHandlers({
     email: '', password: '',
   });
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (values.email.length > 0 || values.password.length > 0) {
+      const userData = {
+        email: values.email,
+        password: values.password,
+      };
+      console.log('все гуд');
+      await dispatch(loginUser(userData))
+        .then((data) => {
+          const user = data.payload;
+          localStorage.setItem('user', JSON.stringify(user));
+        })
+        .then(() => navigate('/'));
+    }
+  };
+
   return (
     <>
-      {/* <AppHeader/> */}
-      <div className={styles.page}>
+      <form className={styles.page} onSubmit={handleSubmit}>
       <img className={styles.owl} src={icon}/>
       <h2 className={styles.text}>Welcome back</h2>
         <FormControl>
@@ -51,16 +71,14 @@ const LoginPage = (): JSX.Element => {
               </Link>
           </FormControl>
           <FormControl>
-            <Link to='/'>
               <button className={styles.button} type='submit'>Continue</button>
-            </Link>
             <FormHelperText>Don't have an account?
-              <Link className={styles.lil_text} to='/register'>
+              <Link className={styles.lil_text} to='/signup'>
                 <p>Sign up</p>
               </Link>
             </FormHelperText>
           </FormControl>
-      </div>
+      </form>
     </>
   );
 };

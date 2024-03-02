@@ -35,3 +35,15 @@
   padding: 0;
   margin: 0;
 }
+
+.lil_text {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: rgb(113, 178, 238);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  &:hover {
+    color: rgb(29, 120, 240);
+  }
+}

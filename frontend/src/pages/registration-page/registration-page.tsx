@@ -3,18 +3,14 @@
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import FormControl from '@mui/joy/FormControl';
-import { useState } from 'react';
 import { FormLabel } from '@mui/joy';
 import FormHelperText from '@mui/joy/FormHelperText';
-import { ThunkDispatch } from '@reduxjs/toolkit';
-import AppHeader from '../../components/app-header/app-header';
 import styles from './registration-page.module.scss';
 import { useDispatch } from '../../hooks/hooks';
 import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
 import { registerUser } from '../../lib/features/auth/auth-api';
 import { AppDispatch } from '../../services/types';
-import { RootState } from '../../lib/store';
 
 const RegistrationPage = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
@@ -86,6 +82,11 @@ const RegistrationPage = (): JSX.Element => {
             onChange={handleInputChange}
             name='password'
             />
+            <FormHelperText>Already have an account?
+              <Link className={styles.lil_text} to='/login'>
+                <p>Log in</p>
+              </Link>
+            </FormHelperText>
         </FormControl>
         {/* <Link to='/'> */}
           <button className={styles.button} type='submit'>Continue</button>

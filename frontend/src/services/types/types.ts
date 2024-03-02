@@ -26,6 +26,11 @@ export interface IUpdateInfo {
   avatar?: string,
 }
 
+export interface ILoginInfo {
+  password: string,
+  email: string,
+}
+
 export interface IModal {
   onClose(): void;
   children: JSX.Element;

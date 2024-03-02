@@ -65,6 +65,30 @@ export const changeUserInfo = async (req: Request, res: Response) => {
   }
 };
 
+export const loginUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
+    const userDoc = await User.findUserByCredentials(email, password);
+
+    if (!userDoc) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    // Преобразуйте объект Document в обычный JavaScript объект
+    const user = userDoc.toJSON();
+
+    res.status(201).json({
+      email: user.email,
+      name: user.name,
+      _id: user._id,
+      avatar: user.avatar,
+      about: user.about,
+    });
+  } catch (error) {
+    console.error('Ошибка при авторизации:', error);
+    res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+  }
+};
 
 

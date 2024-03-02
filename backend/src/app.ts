@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { createUser } from './controllers/user';
+import { createUser, loginUser } from './controllers/user';
 import userRouter from './routes/user';
 
 const cors = require('cors');
@@ -18,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/signup', createUser);
+app.post('/login', loginUser);
 
 app.get('/', (req, res) => {
   res.send('HELLO! Это рабочий сервер Express!!!!!');
