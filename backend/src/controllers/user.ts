@@ -19,6 +19,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
       name: user.name,
       avatar: user.avatar,
       about: user.about,
+      _id: user._id,
     }))
     .catch((err: any) => {
       return res.status(409).json({ error: 'Такой пользователь уже есть' });
@@ -48,7 +49,7 @@ export const changeUserInfo = async (req: Request, res: Response) => {
 
     const newUser = await User.findByIdAndUpdate(_id, updatedFields, { new: true });
 
-    res.status(200).json(newUser);
+    res.status(200).send(newUser);
   } catch (error) {
     console.error('Ошибка при создании пользователя:', error);
     res.status(500).json({ message: 'Internal server error' });

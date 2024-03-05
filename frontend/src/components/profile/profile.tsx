@@ -5,25 +5,29 @@ import {
   Avatar, FormControl, FormLabel, Input,
 } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from '../../hooks/hooks';
 import styles from './profile.module.scss';
-import { AppDispatch } from '../../services/types';
+import { AppDispatch, AppThunk, AppThunkk } from '../../services/types';
 import useInputHandlers from '../../hooks/use-input';
 import getLocalStorage from '../../hooks/local-storage';
 import { TUser } from '../../services/types/types';
-import { updateUser } from '../../lib/features/auth/auth-api';
+import { updateUserInfo } from '../../lib/features/auth/auth-api';
 
 const Profile = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
+  // получаем актуальное состояние
+  const [user, setUser] = useState<TUser | void>(getLocalStorage('user'));
+
   const { values, handleInputChange } = useInputHandlers({
     password: '', name: '', avatar: '',
   });
 
-  // получаем данные юзера из хранилища
-  const user: TUser = getLocalStorage('user');
-  console.log(user?._id);
+  useEffect(() => {
+    setUser(getLocalStorage('user'));
+  }, []);
 
   const logOut = () => {
     localStorage.removeItem('user');
@@ -42,13 +46,12 @@ const Profile = (): JSX.Element => {
       };
 
       try {
-        const { payload: newUser } = await dispatch(updateUser(userData));
+        const updatedUser = await dispatch(updateUserInfo(userData) as AppThunkk);
+        console.log('все гуд');
 
-        localStorage.setItem('user', JSON.stringify(newUser));
-        const NEW: TUser = getLocalStorage('user');
-        console.log(NEW);
-      } catch (error) {
-        console.error('Failed to update user info:', error);
+        setUser(updatedUser); // Обновляем состояние пользователя
+      } catch (error: any) {
+        alert(error.message);
       }
     }
   };

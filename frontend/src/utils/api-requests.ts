@@ -1,10 +1,10 @@
-import { IUser, IRegisterResponse } from '../services/types/types';
+import { IUser, IRegisterResponse, IUpdateInfo } from '../services/types/types';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-const registerUser = async (userData: IUser) => fetch('http://localhost:3000/signup', {
+export const registerUser = async (userData: IUser) => fetch('http://localhost:3000/signup', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
@@ -12,4 +12,10 @@ const registerUser = async (userData: IUser) => fetch('http://localhost:3000/sig
   body: JSON.stringify(userData),
 }).then(checkResponse<IRegisterResponse>);
 
-export default registerUser;
+export const changeUser = async (userData: IUpdateInfo) => fetch('http://localhost:3000/user/me', {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+  body: JSON.stringify(userData),
+}).then(checkResponse<IRegisterResponse>);
