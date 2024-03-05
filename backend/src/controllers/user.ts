@@ -1,40 +1,30 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 import bcrypt from 'bcrypt';
 
-
-export const createUser = async (req: Request, res: Response) => {
-  try {
-    const {
-      name, avatar, about, password, email,
-    } = req.body;
-
-    if (!password || !email) {
-      return res.status(400).json({ error: 'Не все обязательные поля заполнены' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
+export const createUser = (req: Request, res: Response, next: NextFunction) => {
+  const {
+    name, avatar, about, password, email,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
       email,
-      password: hashedPassword,
+      password: hash,
       name,
       avatar,
       about,
-    });
-
-    res.status(201).json({
+    }))
+    .then((user) => res.status(201).send({
       email: user.email,
       name: user.name,
-      _id: user._id,
       avatar: user.avatar,
       about: user.about,
+    }))
+    .catch((err: any) => {
+      return res.status(409).json({ error: 'Такой пользователь уже есть' });
     });
-  } catch (error) {
-    console.error('Ошибка при создании пользователя:', error);
-    res.status(500).json({ error: 'Внутренняя ошибка сервера' });
-  }
 };
+
 
 export const changeUserInfo = async (req: Request, res: Response) => {
   try {
@@ -90,5 +80,3 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Внутренняя ошибка сервера' });
   }
 };
-
-

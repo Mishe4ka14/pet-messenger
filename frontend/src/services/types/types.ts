@@ -37,12 +37,15 @@ export interface IModal {
 }
 
 export interface IRegisterResponse {
-  email: string,
-  password: string,
-  name: string,
-  about: string,
-  _id: string,
-  avatar: string,
+  payload: {
+    email: string;
+    password: string;
+    name: string;
+    about: string;
+    _id: string;
+    avatar: string;
+  };
+  error?: string;
 }
 
 export interface IUpdateUserResponse {

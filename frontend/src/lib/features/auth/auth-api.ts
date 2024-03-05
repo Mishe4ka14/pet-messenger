@@ -4,35 +4,21 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo, ILoginInfo,
 } from '../../../services/types/types';
+import { AppDispatch, AppThunk } from '../../../services/types';
+import registerUser from '../../../utils/api-requests';
+import { registerFailed } from './auth-actions';
 
-export const registerUser = createAsyncThunk<
-  IRegisterResponse,
-  IUser,
-  { rejectValue: string }
->(
-  'user/register',
-  async (userData: IUser, { rejectWithValue }) => {
+export const registerRequest: AppThunk = (userData: IUser) => {
+  return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to register user');
-      }
-
-      return await response.json();
-    } catch (error: any) {
-      console.error('Error: ', error);
-      // Обрабатываем ошибку и возвращаем rejectWithValue
-      return rejectWithValue(error.message);
+      const res = await registerUser(userData);
+      console.log(res);
+      localStorage.setItem('user', JSON.stringify(res));
+    } catch (error) {
+      throw new Error('Этот имейл уже занят! Пожалуйста, попробуй другой.');
     }
-  },
-);
+  };
+};
 
 export const updateUser = createAsyncThunk<
 IUpdateUserResponse,
