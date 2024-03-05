@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../lib/store';
-import { Action, ActionCreator } from 'redux';
+import { ActionCreator } from 'redux';
 import { TAuthActions } from '../../lib/features/auth/auth-actions';
 
 // Типизация thunk

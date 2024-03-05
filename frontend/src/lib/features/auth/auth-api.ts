@@ -6,7 +6,6 @@ import {
 } from '../../../services/types/types';
 import { AppDispatch, AppThunk } from '../../../services/types';
 import registerUser from '../../../utils/api-requests';
-import { registerFailed } from './auth-actions';
 
 export const registerRequest: AppThunk = (userData: IUser) => {
   return async (dispatch: AppDispatch) => {
