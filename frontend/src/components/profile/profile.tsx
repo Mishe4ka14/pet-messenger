@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from '../../hooks/hooks';
 import styles from './profile.module.scss';
-import { AppDispatch, AppThunk, AppThunkk } from '../../services/types';
+import { AppDispatch, AppThunkk } from '../../services/types';
 import useInputHandlers from '../../hooks/use-input';
 import getLocalStorage from '../../hooks/local-storage';
 import { TUser } from '../../services/types/types';
@@ -31,7 +31,7 @@ const Profile = (): JSX.Element => {
 
   const logOut = () => {
     localStorage.removeItem('user');
-    navigate('/signup');
+    navigate('/login');
   };
 
   const handleChangeInfo = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,8 +47,6 @@ const Profile = (): JSX.Element => {
 
       try {
         const updatedUser = await dispatch(updateUserInfo(userData) as AppThunkk);
-        console.log('все гуд');
-
         setUser(updatedUser); // Обновляем состояние пользователя
       } catch (error: any) {
         alert(error.message);

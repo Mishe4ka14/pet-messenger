@@ -1,5 +1,5 @@
 import {
-  IUser, IRegisterResponse, IUpdateInfo, ISearchUser,
+  IUser, IRegisterResponse, IUpdateInfo, ISearchUser, ILoginInfo,
 } from '../../services/types/types';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
@@ -26,12 +26,10 @@ export const changeUser = async (userData: IUpdateInfo) => fetch('http://localho
 export const findUserByNameOrEmail = async (userData: ISearchUser) => {
   let url = 'http://localhost:3000/user/';
 
-  // Если предоставлено имя, добавляем его в URL
   if (userData.name) {
     url += `?name=${userData.name}`;
   }
 
-  // Если предоставлен имейл и URL уже содержит параметры, добавляем его как дополнительный параметр
   if (userData.email) {
     url += `?email=${userData.email}`;
   }
@@ -43,3 +41,11 @@ export const findUserByNameOrEmail = async (userData: ISearchUser) => {
   },
 }).then(checkResponse<IUser>);
 }
+
+export const loginUserRequest = async (userData: ILoginInfo) => fetch('http://localhost:3000/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+  body: JSON.stringify(userData),
+}).then(checkResponse<IUser>);

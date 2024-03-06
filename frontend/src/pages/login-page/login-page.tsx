@@ -7,7 +7,7 @@ import { FormLabel, FormHelperText } from '@mui/joy';
 import styles from './login-page.module.scss';
 import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
-import { AppDispatch } from '../../services/types';
+import { AppDispatch, AppThunk } from '../../services/types';
 import { useDispatch } from '../../hooks/hooks';
 import { loginUser } from '../../lib/features/auth/auth-api';
 
@@ -26,13 +26,13 @@ const LoginPage = (): JSX.Element => {
         email: values.email,
         password: values.password,
       };
-      console.log('все гуд');
-      await dispatch(loginUser(userData))
-        .then((data) => {
-          const user = data.payload;
-          localStorage.setItem('user', JSON.stringify(user));
-        })
-        .then(() => navigate('/'));
+
+      try {
+        await dispatch(loginUser(userData) as AppThunk);
+        navigate('/');
+      } catch (error: any) {
+        alert(error.message);
+      }
     }
   };
 

@@ -5,7 +5,9 @@ import {
   IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo, ILoginInfo, ISearchUser,
 } from '../../../services/types/types';
 import { AppDispatch, AppThunk, AppThunkk } from '../../../services/types';
-import { changeUser, findUserByNameOrEmail, registerUser } from '../api-requests';
+import {
+  changeUser, findUserByNameOrEmail, loginUserRequest, registerUser,
+} from '../api-requests';
 
 export const registerRequest: AppThunk = (userData: IUser) => {
   return async (dispatch: AppDispatch) => {
@@ -24,7 +26,6 @@ export const updateUserInfo: AppThunk = (userData: IUser) => {
     try {
       const res = await changeUser(userData);
       console.log(res);
-      console.log('nhfkfkf');
       localStorage.setItem('user', JSON.stringify(res));
       return res;
     } catch (error) {
@@ -38,11 +39,8 @@ export const findUser: AppThunk = (userData: ISearchUser) => {
     try {
       const res: IUser = await findUserByNameOrEmail(userData);
 
-      // Проверка, что найденный пользователь существует и имеет нужные свойства
-      // if (res && res.name && res.email) {
       localStorage.setItem('foundUser', JSON.stringify(res));
       return res;
-      // }
     } catch (error: any) {
       // Обработка ошибки
       throw new Error(`Ошибка при поиске пользователя: ${error.message}`);
@@ -50,29 +48,14 @@ export const findUser: AppThunk = (userData: ISearchUser) => {
   };
 };
 
-export const loginUser = createAsyncThunk<
-IRegisterResponse,
-ILoginInfo,
-{ rejectValue: string }
->(
-  'user/login',
-  async (userData: ILoginInfo, { rejectWithValue }) => {
+export const loginUser: AppThunk = (userData: IUser) => {
+  return async (dispatch: AppDispatch) => {
     try {
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to login');
-      }
-      return await response.json();
-    } catch (error: any) {
-      console.error('Error: ', error);
-      return rejectWithValue(error.message);
+      const res = await loginUserRequest(userData);
+      console.log(res);
+      localStorage.setItem('user', JSON.stringify(res));
+    } catch (error) {
+      throw new Error('Неправильные почта или пароль!');
     }
-  },
-);
+  };
+};
