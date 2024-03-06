@@ -81,3 +81,28 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Внутренняя ошибка сервера' });
   }
 };
+
+export const getUserByNameOrEmail = (req: Request, res: Response) => {
+  const { name, email } = req.query;
+
+  const query: { [key: string]: any } = {};
+
+  if (name) {
+    query.name = name;
+  }
+  if (email) {
+    query.email = email;
+  }
+  
+  User.findOne(query)
+    .then((user) => {
+      if (!user) {
+        throw new Error('Пользователь с таким именем или имейлом не найден');
+      }
+      res.send({ data: user });
+    })
+    .catch((error) => {
+      console.error('Ошибка при поиске пользователя:', error.message);
+      res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+    });
+};

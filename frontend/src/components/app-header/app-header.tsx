@@ -1,14 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ava from '../../assets/pretty-elf.jpg';
 import icon from '../../assets/svg (1).svg';
 import styles from './app-header.module.scss';
-import { RootState } from '../../lib/store';
 import getLocalStorage from '../../hooks/local-storage';
 import { IUser } from '../../services/types/types';
 
@@ -16,12 +12,17 @@ type TUser = IUser | null;
 
 const AppHeader = ({ onAvatarClick }: { onAvatarClick: () => void }): JSX.Element => {
   const user: TUser = getLocalStorage('user');
+  const navigate = useNavigate();
+
+  const onStartPanel = () => {
+    navigate('/');
+  };
 
   return (
       <header className={styles.header}>
         <div className={styles.box}>
           <img className={styles.owl} src={icon}/>
-          <h1 className={styles.text}>Hedwig</h1>
+          <h1 className={styles.text} onClick={onStartPanel}>Hedwig</h1>
         </div>
         <div className={styles.box}>
           <NotificationsIcon className={styles.bell} fontSize='large'/>

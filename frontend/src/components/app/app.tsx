@@ -7,6 +7,7 @@ import ResetPasswordPage from '../../pages/reset-password/reset-passwod';
 import StartPanel from '../start-panel/start-panel';
 import Chat from '../chat/chat';
 import { useState } from 'react';
+import SearchUser from '../search-user/seach-user';
 
 const App = ():JSX.Element => {
   const location = useLocation();
@@ -24,7 +25,9 @@ const App = ():JSX.Element => {
     <>
       <Routes>
         <Route path='/' element={<HomePage/>}>
-          <Route path='/' element={<StartPanel/>}/>
+          <Route path='/' element={<StartPanel/>}>
+            <Route path='/find/id' element={<SearchUser/>}/>
+          </Route>
           <Route path='/chat' element={<Chat/>}/>
         </Route>
         <Route path='/login' element={<LoginPage/>}/>

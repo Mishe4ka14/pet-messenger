@@ -8,9 +8,13 @@ import styles from './chat-input.module.scss';
 import ava from '../../assets/pretty-elf.jpg';
 import { addMessage } from '../../lib/features/messages/messages-slice';
 import { RootState } from '../../lib/store';
+import getLocalStorage from '../../hooks/local-storage';
+import { IUser } from '../../services/types/types';
 
 const ChatInput = ({ dispatch }: { dispatch: Dispatch }):JSX.Element => {
   const [inputValue, setInputValue] = useState('');
+
+  const user: IUser | void | null = getLocalStorage('user');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -43,7 +47,7 @@ const ChatInput = ({ dispatch }: { dispatch: Dispatch }):JSX.Element => {
 
   return (
     <div className={styles.box}>
-      <Avatar src={ava} sx={{ width: 70, height: 70 }}/>
+      <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }}/>
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
         value={inputValue}
