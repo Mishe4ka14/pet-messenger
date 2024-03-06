@@ -2,10 +2,10 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo, ILoginInfo,
+  IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo, ILoginInfo, ISearchUser,
 } from '../../../services/types/types';
 import { AppDispatch, AppThunk, AppThunkk } from '../../../services/types';
-import { changeUser, registerUser } from '../../../utils/api-requests';
+import { changeUser, findUserByNameOrEmail, registerUser } from '../api-requests';
 
 export const registerRequest: AppThunk = (userData: IUser) => {
   return async (dispatch: AppDispatch) => {
@@ -29,6 +29,23 @@ export const updateUserInfo: AppThunk = (userData: IUser) => {
       return res;
     } catch (error) {
       throw new Error('ошибка при изменении данных.');
+    }
+  };
+};
+
+export const findUser: AppThunk = (userData: ISearchUser) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const res: IUser = await findUserByNameOrEmail(userData);
+
+      // Проверка, что найденный пользователь существует и имеет нужные свойства
+      // if (res && res.name && res.email) {
+      localStorage.setItem('foundUser', JSON.stringify(res));
+      return res;
+      // }
+    } catch (error: any) {
+      // Обработка ошибки
+      throw new Error(`Ошибка при поиске пользователя: ${error.message}`);
     }
   };
 };

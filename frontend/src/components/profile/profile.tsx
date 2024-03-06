@@ -59,7 +59,7 @@ const Profile = (): JSX.Element => {
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
-        <Avatar sx={{ width: 100, height: 100 }} src={user?.avatar}/>
+        <Avatar className={styles.avatar} sx={{ width: 100, height: 100 }} src={user?.avatar}/>
         <div className={styles.name}>
           <h3 className={styles.title}>{user?.name}</h3>
           <p className={styles.subtitle}>Koroleva semi korolevstv</p>

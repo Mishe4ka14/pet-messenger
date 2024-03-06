@@ -94,7 +94,10 @@ export const getUserByNameOrEmail = (req: Request, res: Response) => {
     query.email = email;
   }
   
-  User.findOne(query)
+  User.findOne({
+    name: { $regex: new RegExp(name as string, 'i') },
+    email: { $regex: new RegExp(email as string, 'i') }
+  })
     .then((user) => {
       if (!user) {
         throw new Error('Пользователь с таким именем или имейлом не найден');
@@ -103,6 +106,6 @@ export const getUserByNameOrEmail = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error('Ошибка при поиске пользователя:', error.message);
-      res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+      res.status(500).json({ message: 'Такого пользователя нет' });
     });
 };

@@ -18,8 +18,12 @@
   border-radius: 50%; 
   overflow: hidden; 
   transition: transform 0.3s ease; 
+  border: 2px rgb(178, 218, 255) solid;
   &:hover {
     transform: scale(1.2);
+  }
+  &:active {
+    transform: scale(0.95);
   }
 }
 
