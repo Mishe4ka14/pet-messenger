@@ -1,8 +1,16 @@
 import { JSX } from 'react';
 
-export interface TextObject {
-  [name: string]: string;
+export interface IProfileInfo {
+  name?: string;
+  about?: string;
+  avatar?: string;
 }
+
+export interface IUpdateUserInfo extends Partial<IProfileInfo> {
+  password?: string;
+}
+
+export type TextObject = { [name: string]: string };
 
 export interface IMessage {
   _id: string;
@@ -11,29 +19,23 @@ export interface IMessage {
   isMine: boolean;
 }
 
-export interface IUser {
-  name?: string,
-  password: string,
-  email: string,
-  about?: string,
-  avatar?: string,
-  _id?: string,
-}
-
-export interface IUpdateInfo {
-  name?: string,
-  password?: string,
-  avatar?: string,
+export interface IUser extends IProfileInfo {
+  password: string;
+  email: string;
+  _id?: string;
 }
 
 export interface ISearchUser {
-  name?: string,
-  email?:string
+  name?: string;
+  email?: string;
 }
 
-export interface ILoginInfo {
-  password: string,
-  email: string,
+export interface ILoginInfo extends ISearchUser {
+  password: string;
+}
+
+export interface IFoundUser extends ISearchUser {
+  avatar: string
 }
 
 export interface IModal {
@@ -42,22 +44,12 @@ export interface IModal {
 }
 
 export interface IRegisterResponse {
-  payload: {
-    email: string;
-    password: string;
-    name: string;
-    about: string;
-    _id: string;
-    avatar: string;
-  };
+  payload: IUser;
   error?: string;
 }
 
-export interface IUpdateUserResponse {
-  password?: string,
-  name?: string,
-  _id?: string,
-  avatar?: string,
-}
-
 export type TUser = IUser | null;
+
+export interface ISearchUserResponse {
+  data: IUser | null;
+}

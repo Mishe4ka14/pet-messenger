@@ -1,5 +1,5 @@
 import {
-  IUser, IRegisterResponse, IUpdateInfo, ISearchUser, ILoginInfo,
+  IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo,
 } from '../../services/types/types';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
@@ -14,7 +14,7 @@ export const registerUser = async (userData: IUser) => fetch('http://localhost:3
   body: JSON.stringify(userData),
 }).then(checkResponse<IRegisterResponse>);
 
-export const changeUser = async (userData: IUpdateInfo) => fetch('http://localhost:3000/user/me', {
+export const changeUser = async (userData: IUpdateUserInfo) => fetch('http://localhost:3000/user/me', {
   method: 'PATCH',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',

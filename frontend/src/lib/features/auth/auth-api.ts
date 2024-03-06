@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  IUser, IRegisterResponse, IUpdateUserResponse, IUpdateInfo, ILoginInfo, ISearchUser,
+  IUser, ISearchUser,
 } from '../../../services/types/types';
 import { AppDispatch, AppThunk, AppThunkk } from '../../../services/types';
 import {

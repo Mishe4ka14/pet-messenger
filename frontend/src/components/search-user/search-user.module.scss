@@ -4,9 +4,10 @@
   margin-left: 100px;
   margin-top: 20px;
   background-color: rgb(178, 218, 255);
-  max-width: 250px;
+  max-width: 220px;
   padding: 5px;
-  border-radius: 20px;
+  border-radius: 30px;
+  cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
   &:hover {
     background-color: rgb(29, 120, 240);

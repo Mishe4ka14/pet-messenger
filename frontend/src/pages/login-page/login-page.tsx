@@ -31,6 +31,7 @@ const LoginPage = (): JSX.Element => {
         await dispatch(loginUser(userData) as AppThunk);
         navigate('/');
       } catch (error: any) {
+        /* eslint-disable no-alert */
         alert(error.message);
       }
     }

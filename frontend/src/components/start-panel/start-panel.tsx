@@ -1,6 +1,7 @@
 /* eslint-disable */
 /* eslint-disable no-unused-vars */
 import { Outlet, useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 import styles from './start-panel.module.scss';
 import startPick from '../../assets/start-pick1.jpg';
 import useInputHandlers from '../../hooks/use-input';
@@ -8,10 +9,14 @@ import { findUser } from '../../lib/features/auth/auth-api';
 import { useDispatch } from '../../hooks/hooks';
 import { AppThunk } from '../../services/types';
 import getLocalStorage from '../../hooks/local-storage';
+import { ISearchUserResponse } from '../../services/types/types';
+import SearchUser from '../search-user/seach-user';
 
 const StartPanel = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [showSearchUser, setShowSearchUser] = useState(false); 
 
   const { values, handleInputChange } = useInputHandlers({
     search: '',
@@ -20,7 +25,10 @@ const StartPanel = (): JSX.Element => {
   const handleUserSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (values.search.length > 0) {
-      console.log('jjju')
+      // очищаем место для нового поиска
+      localStorage.removeItem('foundUser');
+      setShowSearchUser(false)
+
       const userData: { email?: string; name?: string } = {};
 
       if (values.search.includes('@')) {
@@ -28,11 +36,13 @@ const StartPanel = (): JSX.Element => {
       } else {
         userData.name = values.search;
       }
-      console.log('все гуд');
+
       try {
-      const res = await dispatch(findUser(userData) as AppThunk);
-      const data:any = getLocalStorage('foundUser');
-      console.log(data.data)
+        await dispatch(findUser(userData) as AppThunk);
+        const data: ISearchUserResponse | null = getLocalStorage('foundUser');
+        if (data) {
+          setShowSearchUser(true);
+        }
       }
       catch (error: any) {
         alert(error.message);
@@ -56,11 +66,9 @@ const StartPanel = (): JSX.Element => {
           className={styles.search_input}
           onChange={handleInputChange}
         />
-        {/* <Link to='/find/id'> */}
           <button className={styles.search_button} type='submit'>New Chat</button>
-        {/* </Link> */}
       </form>
-      <Outlet/>
+      {showSearchUser && <SearchUser/>}
     </div>
   );
 };

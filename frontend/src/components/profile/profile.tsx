@@ -49,6 +49,7 @@ const Profile = (): JSX.Element => {
         const updatedUser = await dispatch(updateUserInfo(userData) as AppThunkk);
         setUser(updatedUser); // Обновляем состояние пользователя
       } catch (error: any) {
+        /* eslint-disable no-alert */
         alert(error.message);
       }
     }
