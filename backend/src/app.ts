@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { createUser, loginUser } from './controllers/user';
 import userRouter from './routes/user';
+import Chat from './models/chat';
 
 const cors = require('cors');
 
@@ -26,7 +27,23 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter)
 
+// const chat = new Chat({
+//   users: ['65e7dcb39e76704c1ac63c99', '65e8e1c87d936582a3177a0f'], // ID пользователей чата
+//   messages: [
+//     { text: 'Привет, как дела?', sender: '65e7dcb39e76704c1ac63c99' },
+//     { text: 'Привет, всё хорошо, спасибо!', sender: '65e8e1c87d936582a3177a0f' },
+//   ],
+// });
+
+// // Сохранение чата в коллекцию
+// chat.save()
+//   .then((savedChat) => {
+//     console.log('Чат успешно сохранен:', savedChat);
+//   })
+//   .catch((error) => {
+//     console.error('Ошибка при сохранении чата:', error);
+//   });
+
 app.listen(PORT, () => {
-    // Если всё работает, консоль покажет, какой порт приложение слушает
     console.log(`App listening on port ${PORT}`)
 });
