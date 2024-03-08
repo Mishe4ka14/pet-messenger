@@ -1,12 +1,14 @@
 import {
-  IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo,
-} from '../../services/types/types';
+  IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo, IChatOwners, IChat,
+} from '../services/types/types';
+
+const API_URL: string = 'http://localhost:3000/';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const registerUser = async (userData: IUser) => fetch('http://localhost:3000/signup', {
+export const registerUser = async (userData: IUser) => fetch(`${API_URL}signup`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
@@ -14,7 +16,7 @@ export const registerUser = async (userData: IUser) => fetch('http://localhost:3
   body: JSON.stringify(userData),
 }).then(checkResponse<IRegisterResponse>);
 
-export const changeUser = async (userData: IUpdateUserInfo) => fetch('http://localhost:3000/user/me', {
+export const changeUser = async (userData: IUpdateUserInfo) => fetch(`${API_URL}user/me`, {
   method: 'PATCH',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
@@ -24,7 +26,7 @@ export const changeUser = async (userData: IUpdateUserInfo) => fetch('http://loc
 
 /* eslint-disable */
 export const findUserByNameOrEmail = async (userData: ISearchUser) => {
-  let url = 'http://localhost:3000/user/';
+  let url = `${API_URL}user/`;
 
   if (userData.name) {
     url += `?name=${userData.name}`;
@@ -42,10 +44,18 @@ export const findUserByNameOrEmail = async (userData: ISearchUser) => {
 }).then(checkResponse<IUser>);
 }
 
-export const loginUserRequest = async (userData: ILoginInfo) => fetch('http://localhost:3000/login', {
+export const loginUserRequest = async (userData: ILoginInfo) => fetch(`${API_URL}login`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
   body: JSON.stringify(userData),
 }).then(checkResponse<IUser>);
+
+// ПРИ ДОБАВЛЕНИИ АУТЕНТИФИКАЦИИ ПОМЕНЯТЬ url И БРАТЬ ID ИЗ USER
+export const createChatRequest = async (usersID: IChatOwners) => fetch(`${API_URL}chat/${usersID.firstID}/${usersID.secondID}`, { 
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+}).then(checkResponse<IChat>);

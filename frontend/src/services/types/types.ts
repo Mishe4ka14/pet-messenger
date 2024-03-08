@@ -53,3 +53,16 @@ export type TUser = IUser | null;
 export interface ISearchUserResponse {
   data: IUser | null;
 }
+
+export interface IChatOwners {
+  firstID: string,
+  secondID: string,
+}
+
+export interface IChat {
+  users: {
+    firstID: string,
+    secondID: string
+  }[],
+  messages: IMessage[]
+}

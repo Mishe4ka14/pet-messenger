@@ -7,7 +7,7 @@ import {
 import { AppDispatch, AppThunk, AppThunkk } from '../../../services/types';
 import {
   changeUser, findUserByNameOrEmail, loginUserRequest, registerUser,
-} from '../api-requests';
+} from '../../../utils/api-requests';
 
 export const registerRequest: AppThunk = (userData: IUser) => {
   return async (dispatch: AppDispatch) => {
