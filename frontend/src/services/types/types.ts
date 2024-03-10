@@ -64,5 +64,21 @@ export interface IChat {
     firstID: string,
     secondID: string
   }[],
-  messages: IMessage[]
+  messages: IMessage[],
+  _id: string
+}
+
+export interface IChatAndUserResponse {
+  chat: {
+    _id: string;
+    users: string[];
+    messages: IMessage[];
+  };
+  secondUser: {
+    _id: string;
+    name: string;
+    about: string;
+    avatar: string;
+    email: string;
+  };
 }

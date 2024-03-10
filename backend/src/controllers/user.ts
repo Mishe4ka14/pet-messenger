@@ -66,7 +66,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
-    // Преобразуйте объект Document в обычный JavaScript объект
+    // Преобразуем объект Document в обычный JavaScript объект
     const user = userDoc.toJSON();
 
     res.status(201).json({
@@ -101,6 +101,22 @@ export const getUserByNameOrEmail = (req: Request, res: Response) => {
     .then((user) => {
       if (!user) {
         throw new Error('Пользователь с таким именем или имейлом не найден');
+      }
+      res.send({ data: user });
+    })
+    .catch((error) => {
+      console.error('Ошибка при поиске пользователя:', error.message);
+      res.status(500).json({ message: 'Такого пользователя нет' });
+    });
+};
+
+export const getUserById = (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  User.findById(id)
+    .then((user) => {
+      if (!user) {
+        throw new Error('Пользователь с таким ID не найден');
       }
       res.send({ data: user });
     })

@@ -1,22 +1,19 @@
 /*  eslint-disable */
-/* eslint-disable no-unused-vars */
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import FormControl from '@mui/joy/FormControl';
 import { FormLabel } from '@mui/joy';
 import FormHelperText from '@mui/joy/FormHelperText';
 import styles from './registration-page.module.scss';
-import { useDispatch, useSelector } from '../../hooks/hooks';
+import { useDispatch } from '../../hooks/hooks';
 import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
 import { registerRequest } from '../../lib/features/auth/auth-api';
 import { AppDispatch, AppThunk } from '../../services/types';
-import { RootState } from '../../lib/store';
 
 const RegistrationPage = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const registerFailed = useSelector((store: RootState) => store.user.registerFailed);
 
   const { values, handleInputChange } = useInputHandlers({
     email: '', password: '', name: '',

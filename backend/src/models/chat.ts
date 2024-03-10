@@ -30,7 +30,9 @@ const chatSchema = new mongoose.Schema<IChat>({
       default: Date.now
      },
     isRead: Boolean,
-  }]
-})
+  }],
+},
+  { versionKey: false },
+)
 
 export default mongoose.model<IChat>('Chat', chatSchema);

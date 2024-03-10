@@ -1,5 +1,5 @@
 import {
-  IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo, IChatOwners, IChat,
+  IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo, IChatOwners, IChatAndUserResponse,
 } from '../services/types/types';
 
 const API_URL: string = 'http://localhost:3000/';
@@ -24,7 +24,6 @@ export const changeUser = async (userData: IUpdateUserInfo) => fetch(`${API_URL}
   body: JSON.stringify(userData),
 }).then(checkResponse<IRegisterResponse>);
 
-/* eslint-disable */
 export const findUserByNameOrEmail = async (userData: ISearchUser) => {
   let url = `${API_URL}user/`;
 
@@ -37,12 +36,12 @@ export const findUserByNameOrEmail = async (userData: ISearchUser) => {
   }
 
   return fetch(url, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-}).then(checkResponse<IUser>);
-}
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).then(checkResponse<IUser>);
+};
 
 export const loginUserRequest = async (userData: ILoginInfo) => fetch(`${API_URL}login`, {
   method: 'POST',
@@ -52,10 +51,18 @@ export const loginUserRequest = async (userData: ILoginInfo) => fetch(`${API_URL
   body: JSON.stringify(userData),
 }).then(checkResponse<IUser>);
 
+/* eslint-disable */
 // ПРИ ДОБАВЛЕНИИ АУТЕНТИФИКАЦИИ ПОМЕНЯТЬ url И БРАТЬ ID ИЗ USER
 export const createChatRequest = async (usersID: IChatOwners) => fetch(`${API_URL}chat/${usersID.firstID}/${usersID.secondID}`, { 
   method: 'POST',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
-}).then(checkResponse<IChat>);
+}).then(checkResponse<string>);
+
+export const getChatRequest = async (chatID: string | undefined) => fetch(`${API_URL}chat/${chatID}`, { 
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8',
+  },
+}).then(checkResponse<IChatAndUserResponse>);
