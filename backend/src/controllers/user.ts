@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 import bcrypt from 'bcrypt';
+import { getChatList } from './chat';
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
   const {
@@ -70,6 +71,13 @@ export const loginUser = async (req: Request, res: Response) => {
     // Преобразуем объект Document в обычный JavaScript объект
     const user = userDoc.toJSON();
 
+    let chatListData: unknown = []; // По умолчанию пустой массив
+
+    // Если у пользователя есть чаты, получаем данные для списка чата
+    if (user.chats) {
+      chatListData = await getChatList(user.chats, user._id);
+    }
+
     res.status(201).json({
       email: user.email,
       name: user.name,
@@ -77,6 +85,7 @@ export const loginUser = async (req: Request, res: Response) => {
       avatar: user.avatar,
       about: user.about,
       chats: user.chats,
+      chatListData: chatListData // Передаем данные списка чата в ответе
     });
   } catch (error) {
     console.error('Ошибка при авторизации:', error);

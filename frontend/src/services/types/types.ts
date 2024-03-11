@@ -24,6 +24,12 @@ export interface IUser extends IProfileInfo {
   email: string;
   _id?: string;
   chats?: [];
+  chatListData?: {
+    userAvatar: string,
+    userName: string,
+    _id: string,
+    lastMess: string
+  }[];
 }
 
 export interface ISearchUser {

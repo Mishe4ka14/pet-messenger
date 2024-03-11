@@ -7,7 +7,8 @@ $zero: 0;
 .container {
   @include box();
   box-sizing: border-box;
-  max-width: 400px;
+  width: 350px;
+  justify-content: center;
   margin-bottom: 4%;
   padding: 5px 5px;
   cursor: pointer;
@@ -22,16 +23,26 @@ $zero: 0;
   @include box();
   flex-direction: column;
   align-items: start;
-  margin-left: 25px;
+  justify-items: start;
+  margin-left: 20px;
 }
 
 .name {
+  display: block;
   padding: $zero;
-  margin: 10px 0 0;
+  margin: -5px 0 0;
 }
 .text {
-  padding: $zero;
-  margin: $zero;
+  width: 200px;
+  height: 40px;
+  display: block;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Ограничение количества строк */
 }
 
 .link {
