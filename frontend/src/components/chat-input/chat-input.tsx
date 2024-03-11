@@ -5,9 +5,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import styles from './chat-input.module.scss';
-import ava from '../../assets/pretty-elf.jpg';
 import { addMessage } from '../../lib/features/messages/messages-slice';
-import { RootState } from '../../lib/store';
 import getLocalStorage from '../../hooks/local-storage';
 import { IUser } from '../../services/types/types';
 
