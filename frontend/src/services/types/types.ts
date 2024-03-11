@@ -23,6 +23,7 @@ export interface IUser extends IProfileInfo {
   password: string;
   email: string;
   _id?: string;
+  chats?: [];
 }
 
 export interface ISearchUser {

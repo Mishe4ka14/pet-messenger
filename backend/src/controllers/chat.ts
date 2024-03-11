@@ -2,26 +2,43 @@ import { Request, Response } from 'express';
 import Chat from '../models/chat';
 import User from '../models/user';
 
-export const createChat = (req: Request, res: Response) => {
+export const createChat = async (req: Request, res: Response) => {
   const { firstID, secondID } = req.params;
 
   if (!firstID || !secondID) {
     return res.status(400).json({ error: 'Необходимо указать идентификаторы обоих пользователей' });
   }
 
-  Chat.create({
-    users: [firstID, secondID],
-    messages: []
-  })
-    .then((chat) => {
-      if (!chat) {
-        throw new Error('Ошибка при создании чата');
-      }
-      res.status(201).json({ _id: chat._id });
-    })
-    .catch((err: any) => {
-      return res.status(500).json({ error: 'Ошибка при добавлении пользователя в чат' });
+  try {
+    //проверка на существование чата между пользователями
+    let chat = await Chat.findOne({
+      users: { $all: [firstID, secondID] }
+    }).hint({ users: 1 }); 
+
+    if (chat) {
+      return res.status(200).json(chat);
+    }
+
+    // создание нового чата
+    chat = await Chat.create({
+      users: [firstID, secondID],
+      messages: []
     });
+
+    if (!chat) {
+      throw new Error('Ошибка при создании чата');
+    }
+
+    // обновление списков чатов у пользователей
+    await Promise.all([
+      User.findByIdAndUpdate(firstID, { $push: { chats: chat._id } }),
+      User.findByIdAndUpdate(secondID, { $push: { chats: chat._id } })
+    ]);
+
+    res.status(201).json(chat);
+  } catch (err) {
+    return res.status(500).json({ error: 'Ошибка при создании чата' });
+  }
 };
 
 export const getChat = async (req: Request, res: Response) => {

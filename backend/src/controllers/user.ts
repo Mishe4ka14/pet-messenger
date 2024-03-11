@@ -20,6 +20,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
       avatar: user.avatar,
       about: user.about,
       _id: user._id,
+      chats: [],
     }))
     .catch((err: any) => {
       return res.status(409).json({ error: 'Такой пользователь уже есть' });
@@ -75,6 +76,7 @@ export const loginUser = async (req: Request, res: Response) => {
       _id: user._id,
       avatar: user.avatar,
       about: user.about,
+      chats: user.chats,
     });
   } catch (error) {
     console.error('Ошибка при авторизации:', error);

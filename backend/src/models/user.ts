@@ -7,6 +7,7 @@ interface IUser {
   avatar: string
   email: string,
   password: string,
+  chats: mongoose.Types.ObjectId[];
 }
 
 interface UserModel extends Model<IUser> {
@@ -50,6 +51,7 @@ export const userSchema = new mongoose.Schema<IUser>(
       required: [true, 'Поле "password" должно быть заполнено'],
       select: false,
     },
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }],
   },
   { versionKey: false },
 

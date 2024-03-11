@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
-import user from './user';
+import User from './user';
 
 interface IMessage {
   text: string,
@@ -17,22 +17,24 @@ const chatSchema = new mongoose.Schema<IChat>({
   users: [{
     type: mongoose.Schema.Types.ObjectId,
     id: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   }],
   messages: [{
     text: String,
     sender: {
-       type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
     createdAt: {
-       type: Date,
+      type: Date,
       default: Date.now
-     },
+    },
     isRead: Boolean,
   }],
 },
-  { versionKey: false },
+{ versionKey: false },
 )
+
+chatSchema.index({ users: 1 });
 
 export default mongoose.model<IChat>('Chat', chatSchema);
