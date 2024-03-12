@@ -1,67 +1,92 @@
-/* eslint-disable no-undef */
+/* eslint-disable */
 /* eslint-disable no-unused-vars */
 import { Avatar, TextField } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useState, useRef, useEffect } from 'react';
 import styles from './chat-input.module.scss';
-import { addMessage } from '../../lib/features/messages/messages-slice';
 import getLocalStorage from '../../hooks/local-storage';
-import { IUser } from '../../services/types/types';
+import { IMessage, IUser } from '../../services/types/types';
+import { WSS_URL } from '../../utils/api-requests';
 
-const ChatInput = ({ dispatch }: { dispatch: Dispatch }):JSX.Element => {
+interface Props {
+  chatID: string,
+}
+
+const ChatInput = ({ chatID }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
-
   const user: IUser | void | null = getLocalStorage('user');
+  const wsRef = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const ws = new WebSocket(`${WSS_URL}/chat/${chatID}`);
+    wsRef.current = ws;
+
+    ws.addEventListener('open', () => {
+      console.log('WebSocket connection established');
+    });
+
+    // Убедитесь, что обработчик события message добавляется каждый раз при монтировании компонента
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+        console.log('WebSocket connection closed');
+      }
+    };
+  }, [chatID]);
+
+  // Добавляем обработчик события message при каждом монтировании компонента
+  useEffect(() => {
+    if (!wsRef.current) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      console.log('Received message:', event.data);
+    };
+
+    wsRef.current.addEventListener('message', handleMessage);
+
+    // Очищаем обработчик события при размонтировании компонента
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.removeEventListener('message', handleMessage);
+      }
+    };
+  }, []);
+
+  const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!wsRef.current) return;
+    if (inputValue.trim() === '') return;
+
+    const message: IMessage = {
+      text: inputValue,
+      sender: user?._id,
+      createdAt: new Date(),
+    };
+
+    wsRef.current.send(JSON.stringify(message));
+    setInputValue('');
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
-  // функция отправки сообщения
-  const sendMessage = (e?: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-
-    if (!inputValue) return;
-
-    const newMessage = {
-      _id: Math.random().toString(),
-      text: inputValue,
-      owner: 'user1',
-      isMine: true,
-    };
-
-    dispatch(addMessage(newMessage));
-    setInputValue('');
-  };
-
-  // функция отправки сообщения на enter
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      sendMessage();
-    }
-  };
-
   return (
     <div className={styles.box}>
-      <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }}/>
+      <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }} />
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        className={styles.input}
-              id="standard-textarea"
-              placeholder="Type a message"
-              multiline
-              variant="standard"
-              rows={2}
-            />
-          <button className={styles.button} type='submit'>Send</button>
+          value={inputValue}
+          onChange={handleInputChange}
+          className={styles.input}
+          id="standard-textarea"
+          placeholder="Type a message"
+          multiline
+          variant="standard"
+          rows={2}
+        />
+        <button className={styles.button} type="submit">Send</button>
       </form>
     </div>
   );
 };
-
 export default ChatInput;

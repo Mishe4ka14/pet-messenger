@@ -2,7 +2,8 @@ import {
   IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo, IChatOwners, IChatAndUserResponse,
 } from '../services/types/types';
 
-const API_URL: string = 'http://localhost:3000/';
+export const API_URL: string = 'http://localhost:3000/';
+export const WSS_URL: string = 'ws://localhost:3000/';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -58,7 +59,7 @@ export const createChatRequest = async (usersID: IChatOwners) => fetch(`${API_UR
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
-}).then(checkResponse<string>);
+}).then(checkResponse<any>);
 
 export const getChatRequest = async (chatID: string | undefined) => fetch(`${API_URL}chat/${chatID}`, { 
   method: 'GET',

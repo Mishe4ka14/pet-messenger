@@ -2,7 +2,7 @@ import { createReducer, PayloadAction } from '@reduxjs/toolkit';
 import { createChatRequest, createChatSuccess, createChatFailed } from './chat-actions';
 import { IChat } from '../../../services/types/types';
 
-interface ChatState {
+export interface ChatState {
   loading: boolean;
   error: string | null;
   chat: IChat | null | undefined; // Замените any на тип данных чата

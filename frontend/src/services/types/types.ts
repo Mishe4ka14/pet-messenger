@@ -13,10 +13,9 @@ export interface IUpdateUserInfo extends Partial<IProfileInfo> {
 export type TextObject = { [name: string]: string };
 
 export interface IMessage {
-  _id: string;
   text: string | TextObject;
-  owner: string;
-  isMine: boolean;
+  sender: string | undefined,
+  createdAt: Date,
 }
 
 export interface IUser extends IProfileInfo {

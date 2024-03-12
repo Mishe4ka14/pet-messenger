@@ -5,7 +5,7 @@ import {
 } from './messages-actions';
 import { IMessage } from '../../../services/types/types';
 
-type TMessageState = {
+export type TMessageState = {
   status: string;
   message: IMessage | null;
   total: null | number;

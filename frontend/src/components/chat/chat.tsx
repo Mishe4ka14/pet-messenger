@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from '../../hooks/hooks';
+import { useDispatch as useDispatchL } from 'react-redux';
 import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
 import Message from '../message/message';
@@ -17,6 +18,7 @@ const Chat = (): JSX.Element => {
   const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
   const [foundUser, setFoundUser] = useState<TUser | null>(null);
   const { chatID } = useParams();
+  const user: IUser | void | null = getLocalStorage('user');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,7 @@ const Chat = (): JSX.Element => {
 
     fetchData();
   }, [chatID]);
-
+  
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
@@ -50,15 +52,15 @@ const Chat = (): JSX.Element => {
       </div>
         <ul className={`${styles.scroll} custom-scroll`}>
       <div className={`${styles.container}`}>
-      {chatMessages.map((message: IMessage) => (
-            <Message
-              isMine={message.isMine}
-              key={message._id}
+      {chatMessages.map((message: IMessage, index) => (
+        <Message
+              isMine={message.sender === user?._id ? true : false}
+              key={index}
               text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
               />))}
       </div>
         </ul>
-      <ChatInput dispatch={dispatch}/>
+        { chatID && <ChatInput chatID={chatID}/>}
     </div>
   );
 };

@@ -7,8 +7,8 @@ $zero: 0;
 .container {
   @include box();
   box-sizing: border-box;
-  width: 350px;
-  justify-content: center;
+  width: 330px;
+  justify-content:space-between;
   margin-bottom: 4%;
   padding: 5px 5px;
   cursor: pointer;
@@ -24,7 +24,7 @@ $zero: 0;
   flex-direction: column;
   align-items: start;
   justify-items: start;
-  margin-left: 20px;
+  // margin-left: 10px;
 }
 
 .name {
@@ -43,9 +43,4 @@ $zero: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* Ограничение количества строк */
-}
-
-.link {
-  color: black;
-  text-decoration: none;
 }

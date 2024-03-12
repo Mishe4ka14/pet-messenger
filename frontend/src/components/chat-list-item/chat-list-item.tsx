@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Link } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import portret from '../../assets/portret.svg';
 import styles from './chat-list-item.module.scss';
@@ -12,7 +11,6 @@ import styles from './chat-list-item.module.scss';
   }
 
 const ChatListItem = ({ avatar, name, lastMess }: Chat): JSX.Element => (
-  <Link className={styles.link} to='/chat'>
     <div className={styles.container}>
       <Avatar src={avatar} sx={{ width: 60, height: 60 }}/>
       <div className={styles.box}>
@@ -21,7 +19,6 @@ const ChatListItem = ({ avatar, name, lastMess }: Chat): JSX.Element => (
       </div>
       <p>3h</p>
     </div>
-  </Link>
 );
 
 export default ChatListItem;
