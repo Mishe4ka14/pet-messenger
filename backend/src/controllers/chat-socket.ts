@@ -19,8 +19,9 @@ export async function processAndSaveMessage(message: any) {
 
     chat.messages.push(newMessage);
     await chat.save();
-
     console.log('Сообщение успешно добавлено в чат');
+    
+    return newMessage;
   } catch (error) {
     console.error('Ошибка при обработке и сохранении сообщения:', error);
   }

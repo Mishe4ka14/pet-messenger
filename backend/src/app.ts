@@ -42,7 +42,8 @@ wss.on('connection', (ws) => {
   ws.on('message', async (message) => {
     console.log(`Received message: ${message}`);
     try {
-      await processAndSaveMessage(message);
+     const newMessage = await processAndSaveMessage(message);
+     ws.send(JSON.stringify(newMessage));
     } catch (error) {
       console.error('Ошибка при обработке и сохранении сообщения:', error);
     }

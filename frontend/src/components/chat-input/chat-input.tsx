@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { Avatar, TextField } from '@mui/material';
 import { useState, useRef, useEffect } from 'react';
@@ -9,14 +9,16 @@ import { WSS_URL } from '../../utils/api-requests';
 
 interface Props {
   chatID: string,
+  onNewMessage: (message: IMessage) => void;
 }
 
 interface TMess extends IMessage {
   chatID: string
 }
 
-const ChatInput = ({ chatID }: Props): JSX.Element => {
+const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
+
   const user: IUser | void | null = getLocalStorage('user');
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -39,10 +41,13 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
 
   // Добавляем обработчик события message при каждом монтировании компонента
   useEffect(() => {
-    if (!wsRef.current) return;
+    if (!wsRef.current) return () => {};
 
     const handleMessage = (event: MessageEvent) => {
       console.log('Received message:', event.data);
+      const newMessage = JSON.parse(event.data);
+      // Обновляем состояние чата, чтобы отобразить новое сообщение
+      onNewMessage(newMessage);
     };
 
     wsRef.current.addEventListener('message', handleMessage);
@@ -55,7 +60,7 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
     };
   }, []);
 
-  const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
+  const sendMessage = (event: React.KeyboardEvent<HTMLInputElement> | React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!wsRef.current) return;
     if (inputValue.trim() === '') return;
@@ -64,7 +69,7 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
       text: inputValue,
       sender: user?._id,
       createdAt: new Date(),
-      chatID: chatID
+      chatID,
     };
 
     wsRef.current.send(JSON.stringify(message));
@@ -75,6 +80,13 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
     setInputValue(event.target.value);
   };
 
+  // функция отправки сообщения на enter
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage(event);
+    }
+  };
+
   return (
     <div className={styles.box}>
       <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }} />
@@ -82,6 +94,7 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
         <TextField
           value={inputValue}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           className={styles.input}
           id="standard-textarea"
           placeholder="Type a message"

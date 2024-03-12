@@ -1,9 +1,9 @@
 /* eslint-disable */
+/* eslint-disable no-unused-vars */
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from '../../hooks/hooks';
-import { useDispatch as useDispatchL } from 'react-redux';
 import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
 import Message from '../message/message';
@@ -20,6 +20,11 @@ const Chat = (): JSX.Element => {
   const { chatID } = useParams();
   const user: IUser | void | null = getLocalStorage('user');
 
+  const handleNewMessage = (message: IMessage) => {
+    // Обработка нового сообщения и его добавление в список сообщений чата
+    setChatMessages((prevMessages) => [...prevMessages, message]);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (chatID) {
@@ -28,8 +33,8 @@ const Chat = (): JSX.Element => {
           const data = await dispatch(getChat(chatID)) as unknown as IChatAndUserResponse;
 
           // Получаем второго пользователя для загрузки информации
-          const user: IUser | null = getLocalStorage('foundUser');
-          setFoundUser(user ?? null);
+          const secondUser: IUser | null = getLocalStorage('foundUser');
+          setFoundUser(secondUser ?? null);
           setChatMessages(data.chat.messages);
         } catch (error) {
           console.error(error);
@@ -40,7 +45,7 @@ const Chat = (): JSX.Element => {
 
     fetchData();
   }, [chatID]);
-  
+
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
@@ -54,13 +59,13 @@ const Chat = (): JSX.Element => {
       <div className={`${styles.container}`}>
       {chatMessages.map((message: IMessage, index) => (
         <Message
-              isMine={message.sender === user?._id ? true : false}
+              isMine={message.sender === user?._id}
               key={index}
               text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
               />))}
       </div>
         </ul>
-        { chatID && <ChatInput chatID={chatID}/>}
+        { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
     </div>
   );
 };
