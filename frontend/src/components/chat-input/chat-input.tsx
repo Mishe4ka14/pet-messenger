@@ -11,6 +11,10 @@ interface Props {
   chatID: string,
 }
 
+interface TMess extends IMessage {
+  chatID: string
+}
+
 const ChatInput = ({ chatID }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
   const user: IUser | void | null = getLocalStorage('user');
@@ -56,10 +60,11 @@ const ChatInput = ({ chatID }: Props): JSX.Element => {
     if (!wsRef.current) return;
     if (inputValue.trim() === '') return;
 
-    const message: IMessage = {
+    const message: TMess = {
       text: inputValue,
       sender: user?._id,
       createdAt: new Date(),
+      chatID: chatID
     };
 
     wsRef.current.send(JSON.stringify(message));

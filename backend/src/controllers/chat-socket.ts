@@ -1,21 +1,27 @@
-// const http = require("http");
-// const express = require( "express");
-// const WebSocket = require( "ws");
+import Chat from "../models/chat";
 
-// const app = express();
+export async function processAndSaveMessage(message: any) {
+  try {
+    const parsedMessage = JSON.parse(message);
+    const { chatID, text, sender } = parsedMessage;
 
-// const server = http.createServer(app);
+    const chat = await Chat.findById(chatID);
+    if (!chat) {
+      console.error('Чат не найден');
+      return;
+    }
 
-// const webSocketServer = new WebSocket.Server({ server });
+    const newMessage = {
+      text,
+      sender,
+      createdAt: new Date(),
+    };
 
-// webSocketServer.on('connection', ws => {
-//    ws.on('message', m => {
-// webSocketServer.clients.forEach(client => client.send(m));
-//    });
+    chat.messages.push(newMessage);
+    await chat.save();
 
-//    ws.on("error", e => ws.send(e));
-
-//    ws.send('Hi there, I am a WebSocket server');
-// });
-
-// server.listen(8999, () => console.log("Server started"))
+    console.log('Сообщение успешно добавлено в чат');
+  } catch (error) {
+    console.error('Ошибка при обработке и сохранении сообщения:', error);
+  }
+}

@@ -68,7 +68,6 @@ export const getChat = async (req: Request, res: Response) => {
 // получаем необходимую информацию для списка чатов
 export const getChatList = async (chatListIDs: string[], userId: string) => {
   try {
-    // Проверяем, были ли переданы идентификаторы чатов
     if (!chatListIDs || chatListIDs.length === 0) {
       throw new Error('Необходимо передать идентификаторы чатов');
     }
@@ -77,7 +76,7 @@ export const getChatList = async (chatListIDs: string[], userId: string) => {
     const data = await Chat.aggregate([
       { $match: { _id: { $in: chatListIDs } } },
       { $unwind: '$users' },
-      { $match: { users: { $ne: userId } } }, // Исключаем текущего пользователя из результатов
+      { $match: { users: { $ne: userId } } }, 
       {
         $lookup: {
           from: 'users',
@@ -104,7 +103,7 @@ export const getChatList = async (chatListIDs: string[], userId: string) => {
           userName: '$user.name',
           userAvatar: '$user.avatar',
           lastMessageText: '$lastMessage.text',
-          lastMessageCreatedAt: '$lastMessage.createdAt' // Добавляем время создания последнего сообщения
+          lastMessageCreatedAt: '$lastMessage.createdAt'
         }
       }
     ]);
@@ -114,13 +113,13 @@ export const getChatList = async (chatListIDs: string[], userId: string) => {
       userName: chat.userName,
       userAvatar: chat.userAvatar,
       lastMessageText: chat.lastMessageText,
-      lastMessageCreatedAt: chat.lastMessageCreatedAt // Передаем время создания последнего сообщения
+      lastMessageCreatedAt: chat.lastMessageCreatedAt 
     }));
 
-    // Возвращаем найденные чаты
     return chats;
   } catch (error) {
     console.error('Ошибка при получении списка чатов:', error);
     throw new Error('Ошибка при получении списка чатов');
   }
 }
+
