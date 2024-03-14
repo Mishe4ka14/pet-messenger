@@ -1,0 +1,22 @@
+.container {
+  box-sizing: border-box;
+  position: fixed;
+  top: 15%;
+  left: 33%;
+  background-color: white;
+  width: 560px;
+  border-radius: 20px;
+  z-index: 999;
+}
+
+.close {
+  cursor: pointer;
+  position: relative;
+  top: 25px;
+  left: 520px;
+  z-index: 999;
+  transition: color 0.3s ease; 
+  &:hover {
+    color: rgb(80, 117, 227);
+  }
+}

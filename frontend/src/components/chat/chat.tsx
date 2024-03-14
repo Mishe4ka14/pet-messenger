@@ -1,44 +1,72 @@
-/* eslint-disable no-undef */
+/* eslint-disable */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
 import { Avatar } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch } from '../../hooks/hooks';
 import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
 import Message from '../message/message';
-import ava from '../../assets/portret.svg';
-import { IMessage } from '../../services/types/types';
-import { RootState } from '../../lib/store';
+import {
+  IChatAndUserResponse, IMessage, IUser, TUser,
+} from '../../services/types/types';
+import { getChat } from '../../lib/features/chat/chat-api';
+import Cookies from 'js-cookie';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const Chat = (): JSX.Element => {
-  const { messages } = useSelector((store: RootState) => store.messages);
-  const [chatMessages, setChatMessages] = useState<IMessage[]>(messages);
+  const dispatch = useDispatch();
+  const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
+  const [foundUser, setFoundUser] = useState<TUser | null>(null);
+  const { chatID } = useParams();
+  const user = getUserFromCookie<TUser>('user');
+
+  const handleNewMessage = (message: IMessage) => {
+    // Обработка нового сообщения и его добавление в список сообщений чата
+    setChatMessages((prevMessages) => [...prevMessages, message]);
+  };
 
   useEffect(() => {
-    setChatMessages(messages);
-  }, [messages]);
+    const fetchData = async () => {
+      if (chatID) {
+        try {
+          Cookies.remove('foundUser');
+          const data = await dispatch(getChat(chatID)) as unknown as IChatAndUserResponse;
+
+          // Получаем второго пользователя для загрузки информации
+          const secondUser = getUserFromCookie<TUser>('foundUser');
+          setFoundUser(secondUser ?? null);
+          setChatMessages(data.chat.messages);
+        } catch (error) {
+          console.error(error);
+          alert('Произошла ошибка при создании чата');
+        }
+      }
+    };
+
+    fetchData();
+  }, [chatID]);
 
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
-        <Avatar src={ava} sx={{ width: 60, height: 60 }}/>
+        <Avatar src={foundUser?.avatar} sx={{ width: 70, height: 70 }}/>
         <div className={styles.info}>
-          <h2 className={styles.name}>Цирилла Цинтрийская</h2>
-          <p className={styles.subtitle}>Принцесса</p>
+          <h2 className={styles.name}>{foundUser?.name}</h2>
+          <p className={styles.about}>{foundUser?.about}</p>
         </div>
       </div>
         <ul className={`${styles.scroll} custom-scroll`}>
       <div className={`${styles.container}`}>
-      {chatMessages.map((message: IMessage) => (
-            <Message
-              isMine={message.isMine}
-              key={message._id}
+      {chatMessages.map((message: IMessage, index) => (
+        <Message
+              isMine={message.sender === user?._id}
+              key={index}
               text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
               />))}
       </div>
         </ul>
-      <ChatInput/>
+        { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
     </div>
   );
 };

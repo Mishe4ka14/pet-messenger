@@ -1,0 +1,72 @@
+.profile {
+  z-index: 200;
+  // background-color: aliceblue;
+}
+
+.info {
+  z-index: 200;
+  display: flex;
+  justify-content: left;
+  margin-left: 20px;
+  gap: 30px;
+}
+
+.name {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+.edit {
+  margin-top: 40px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.button {
+  background-color: rgb(178, 218, 255);
+  color: rgb(2, 47, 89);
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  height: 50px;
+  width: 300px;
+  margin-bottom: 30px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  &:hover {
+    background-color: rgb(29, 120, 240);
+    color:azure;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.text {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+}
+
+.avatar {
+  border: 2px rgb(178, 218, 255) solid;
+}
