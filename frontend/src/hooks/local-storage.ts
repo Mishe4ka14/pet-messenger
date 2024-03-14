@@ -1,7 +1,4 @@
 /* eslint-disable */
-interface UserData {
-  // определите структуру данных пользователя здесь
-}
 
 function getLocalStorage<T>(key: string): T | null {
   try {

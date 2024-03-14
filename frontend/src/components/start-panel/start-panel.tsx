@@ -2,15 +2,16 @@
 /* eslint-disable no-unused-vars */
 import { Outlet, useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 import styles from './start-panel.module.scss';
 import startPick from '../../assets/start-pick1.jpg';
 import useInputHandlers from '../../hooks/use-input';
 import { findUser } from '../../lib/features/auth/auth-api';
 import { useDispatch } from '../../hooks/hooks';
 import { AppThunk } from '../../services/types';
-import getLocalStorage from '../../hooks/local-storage';
 import { ISearchUserResponse } from '../../services/types/types';
 import SearchUser from '../search-user/seach-user';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const StartPanel = (): JSX.Element => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const StartPanel = (): JSX.Element => {
     e.preventDefault();
     if (values.search.length > 0) {
       // очищаем место для нового поиска
-      localStorage.removeItem('foundUser');
+      Cookies.remove('foundUser');
       setShowSearchUser(false)
 
       const userData: { email?: string; name?: string } = {};
@@ -39,7 +40,7 @@ const StartPanel = (): JSX.Element => {
 
       try {
         await dispatch(findUser(userData) as AppThunk);
-        const data: ISearchUserResponse | null = getLocalStorage('foundUser');
+        const data: ISearchUserResponse | null = getUserFromCookie('foundUser');
         if (data) {
           setShowSearchUser(true);
         }

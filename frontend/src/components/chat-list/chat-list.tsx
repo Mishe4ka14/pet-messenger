@@ -1,22 +1,25 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import ChatListItem from '../chat-list-item/chat-list-item';
 import styles from './chst-list.module.scss';
-import getLocalStorage from '../../hooks/local-storage';
 import { IUser } from '../../services/types/types';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const ChatList = (): JSX.Element => {
   const [chatData, setChatdata] = useState<IUser | null | undefined>();
 
-  useEffect(() => {
-    const data: IUser | undefined | null = getLocalStorage('user');
-    setChatdata(data);
-  }, []);
-
   const chatItems = chatData?.chatListData ?? [];
+
+  useEffect(() => {
+    const user = getUserFromCookie<IUser>('user');
+    if (user) {
+      setChatdata(user);
+    }
+  }, []);
 
   return (
   <div className={styles.container}>

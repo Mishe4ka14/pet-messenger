@@ -5,21 +5,21 @@ import { Avatar } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
 import styles from './search-user.module.scss';
 import { useDispatch } from '../../hooks/hooks';
-import getLocalStorage from '../../hooks/local-storage';
 import { IChat, ISearchUserResponse, IUser } from '../../services/types/types';
 import { createChat } from '../../lib/features/chat/chat-api';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const SearchUser = ():JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const data = getLocalStorage('foundUser') as ISearchUserResponse;
+  const data = getUserFromCookie('foundUser') as ISearchUserResponse;
   const foundUser = data.data;
 
   const handleCreateChat = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const firstUser: IUser | null = getLocalStorage('user');
+    const firstUser = getUserFromCookie<IUser>('user');
 
     const usersID = {
       firstID: firstUser?._id,

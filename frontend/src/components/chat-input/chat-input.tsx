@@ -3,9 +3,9 @@
 import { Avatar, TextField } from '@mui/material';
 import { useState, useRef, useEffect } from 'react';
 import styles from './chat-input.module.scss';
-import getLocalStorage from '../../hooks/local-storage';
 import { IMessage, IUser } from '../../services/types/types';
 import { WSS_URL } from '../../utils/api-requests';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 interface Props {
   chatID: string,
@@ -19,7 +19,7 @@ interface TMess extends IMessage {
 const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
 
-  const user: IUser | void | null = getLocalStorage('user');
+  const user = getUserFromCookie<IUser>('user');
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {

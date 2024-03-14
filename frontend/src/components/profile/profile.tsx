@@ -6,31 +6,37 @@ import {
 } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { useDispatch } from '../../hooks/hooks';
 import styles from './profile.module.scss';
 import { AppDispatch, AppThunkk } from '../../services/types';
 import useInputHandlers from '../../hooks/use-input';
-import getLocalStorage from '../../hooks/local-storage';
 import { TUser } from '../../services/types/types';
 import { updateUserInfo } from '../../lib/features/auth/auth-api';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const Profile = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
+  // const userCookie = Cookies.get('user');
+  // const user = userCookie ? JSON.parse(userCookie) : null;
   // получаем актуальное состояние
-  const [user, setUser] = useState<TUser | void>(getLocalStorage('user'));
+  const [user, setUser] = useState<TUser | null | void>(null);
 
   const { values, handleInputChange } = useInputHandlers({
     password: '', name: '', avatar: '',
   });
 
   useEffect(() => {
-    setUser(getLocalStorage('user'));
+    const userCookie = getUserFromCookie<TUser>('user');
+    if (userCookie) {
+      setUser(userCookie);
+    }
   }, []);
 
   const logOut = () => {
-    localStorage.removeItem('user');
+    Cookies.remove('user');
     navigate('/login');
   };
 

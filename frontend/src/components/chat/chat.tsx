@@ -11,14 +11,15 @@ import {
   IChatAndUserResponse, IMessage, IUser, TUser,
 } from '../../services/types/types';
 import { getChat } from '../../lib/features/chat/chat-api';
-import getLocalStorage from '../../hooks/local-storage';
+import Cookies from 'js-cookie';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 const Chat = (): JSX.Element => {
   const dispatch = useDispatch();
   const [chatMessages, setChatMessages] = useState<IMessage[]>([]);
   const [foundUser, setFoundUser] = useState<TUser | null>(null);
   const { chatID } = useParams();
-  const user: IUser | void | null = getLocalStorage('user');
+  const user = getUserFromCookie<TUser>('user');
 
   const handleNewMessage = (message: IMessage) => {
     // Обработка нового сообщения и его добавление в список сообщений чата
@@ -29,11 +30,11 @@ const Chat = (): JSX.Element => {
     const fetchData = async () => {
       if (chatID) {
         try {
-          localStorage.removeItem('foundUser');
+          Cookies.remove('foundUser');
           const data = await dispatch(getChat(chatID)) as unknown as IChatAndUserResponse;
 
           // Получаем второго пользователя для загрузки информации
-          const secondUser: IUser | null = getLocalStorage('foundUser');
+          const secondUser = getUserFromCookie<TUser>('foundUser');
           setFoundUser(secondUser ?? null);
           setChatMessages(data.chat.messages);
         } catch (error) {

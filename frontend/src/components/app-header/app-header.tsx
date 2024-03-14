@@ -5,13 +5,13 @@ import { Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import icon from '../../assets/svg (1).svg';
 import styles from './app-header.module.scss';
-import getLocalStorage from '../../hooks/local-storage';
 import { IUser } from '../../services/types/types';
+import getUserFromCookie from '../../hooks/cookie-parser';
 
 type TUser = IUser | null;
 
 const AppHeader = ({ onAvatarClick }: { onAvatarClick: () => void }): JSX.Element => {
-  const user: TUser = getLocalStorage('user');
+  const user = getUserFromCookie<TUser>('user');
   const navigate = useNavigate();
 
   const onStartPanel = () => {
