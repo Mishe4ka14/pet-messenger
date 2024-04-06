@@ -1,17 +1,19 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { registerFailed } from './auth-actions';
+import { registerFailed, setAuthChecked } from './auth-actions';
 import { IUser } from '../../../services/types/types';
 
 interface IUserState {
   user: IUser | null
   error: string | undefined,
   registerFailed: boolean,
+  isAuthChecked: boolean;
 }
 
 const initialState: IUserState = {
   user: null,
   error: undefined,
   registerFailed: false,
+  isAuthChecked: false,
 };
 
 const authReducer = createReducer(initialState, (builder) => {
@@ -20,6 +22,10 @@ const authReducer = createReducer(initialState, (builder) => {
       ...state,
       registerFailed: true,
       error: action.payload,
+    }))
+    .addCase(setAuthChecked, (state, action) => ({
+      ...state,
+      isAuthChecked: action.payload,
     }));
 });
 

@@ -6,11 +6,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import HomePage from './pages/home-page/home-page';
 import store from './lib/store';
-import RegistrationPage from './pages/registration-page/registration-page';
-import LoginPage from './pages/login-page/login-page';
-import ResetPasswordPage from './pages/reset-password/reset-passwod';
 import App from './components/app/app';
 
 const root = ReactDOM.createRoot(

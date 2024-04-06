@@ -52,6 +52,8 @@ export interface IModal {
 export interface IRegisterResponse {
   payload: IUser;
   error?: string;
+  refreshToken: string;
+  accessToken: string;
 }
 
 export type TUser = IUser | null;
