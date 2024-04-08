@@ -31,7 +31,7 @@ const Chat = (): JSX.Element => {
       if (chatID) {
         try {
           Cookies.remove('foundUser');
-          const data = await dispatch(getChat(chatID)) as unknown as IChatAndUserResponse;
+          const data = await dispatch(getChat(chatID, user?._id)) as unknown as IChatAndUserResponse;
 
           // Получаем второго пользователя для загрузки информации
           const secondUser = getUserFromCookie<TUser>('foundUser');
@@ -57,14 +57,14 @@ const Chat = (): JSX.Element => {
         </div>
       </div>
         <ul className={`${styles.scroll} custom-scroll`}>
-      <div className={`${styles.container}`}>
-      {chatMessages.map((message: IMessage, index) => (
-        <Message
-              isMine={message.sender === user?._id}
-              key={index}
-              text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
-              />))}
-      </div>
+          <div className={`${styles.container}`}>
+          {chatMessages.map((message: IMessage, index) => (
+            <Message
+                  isMine={message.sender === user?._id}
+                  key={index}
+                  text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
+                  />))}
+          </div>
         </ul>
         { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
     </div>

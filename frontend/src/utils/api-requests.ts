@@ -61,7 +61,7 @@ export const createChatRequest = async (usersID: IChatOwners) => fetch(`${API_UR
   },
 }).then(checkResponse<any>);
 
-export const getChatRequest = async (chatID: string | undefined) => fetch(`${API_URL}chat/${chatID}`, { 
+export const getChatRequest = async (chatID: string | undefined, userID: string) => fetch(`${API_URL}chat/${chatID}?userID=${userID}`, { 
   method: 'GET',
   headers: {
     'Content-Type': 'application/json;charset=utf-8',

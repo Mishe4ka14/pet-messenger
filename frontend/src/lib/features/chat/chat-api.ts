@@ -16,10 +16,10 @@ export const createChat: AppThunk = (userID: IChatOwners) => {
   };
 };
 
-export const getChat: AppThunk = (chatID: string | undefined) => {
+export const getChat: AppThunk = (chatID: string | undefined, userID) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const res = await getChatRequest(chatID);
+      const res = await getChatRequest(chatID, userID);
       Cookies.set('foundUser', JSON.stringify(res.secondUser));
       const user = Cookies.get('foundUser');
       console.log(user);
