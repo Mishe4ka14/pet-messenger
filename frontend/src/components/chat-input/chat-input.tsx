@@ -89,7 +89,7 @@ const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
 
   return (
     <div className={styles.box}>
-      <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }} />
+      {/* <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }} /> */}
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
           value={inputValue}

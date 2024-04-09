@@ -56,6 +56,7 @@ const Chat = (): JSX.Element => {
           <p className={styles.about}>{foundUser?.about}</p>
         </div>
       </div>
+      <div className={styles.chat_and_chatInput}>
         <ul className={`${styles.scroll} custom-scroll`}>
           <div className={`${styles.container}`}>
           {chatMessages.map((message: IMessage, index) => (
@@ -67,6 +68,7 @@ const Chat = (): JSX.Element => {
           </div>
         </ul>
         { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
+      </div>
     </div>
   );
 };
