@@ -1,7 +1,7 @@
 # Pet-проект: мессенджер Hedwig
 <img width="1440" alt="Главный экран" src="https://github.com/Mishe4ka14/pet-messenger/blob/main/frontend/src/assets/Pet-project%20scrin2.png">
 
-<img width="1440" alt="Скрин чата" src="https://github.com/Mishe4ka14/pet-messenger/blob/main/frontend/src/assets/Pet-project%20scrin1.png">
+<img width="1440" alt="Скрин чата" src="https://github.com/Mishe4ka14/pet-messenger/blob/main/frontend/src/assets/scrin3.png">
 
 ## Структура проекта
   - backend
