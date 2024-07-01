@@ -1,43 +1,47 @@
-# Getting Started with Create React App
+# Pet-проект: мессенджер Hedwig
+<img width="1440" alt="Главный экран" src="https://github.com/Mishe4ka14/pet-messenger/blob/main/frontend/src/assets/Pet-project%20scrin2.png">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img width="1440" alt="Скрин чата" src="https://github.com/Mishe4ka14/pet-messenger/blob/main/frontend/src/assets/Pet-project%20scrin1.png">
 
-## Available Scripts
+## Структура проекта
+  - backend
+  - frontend - этот репозиторий <3
 
-In the project directory, you can run:
+## Что сделал
+   * настроил инфраструктуру и создал сервер на express;
+   * подключил базу данных и создал схемы и модели ресурсов API;
+   * реализовал логирование и авторизацию на сервере;
+   * сверстал компоненты React, главную страницу и модальное окно;
+   * реализовал асинхронные GET- и POST- запросы на сервер;
+   * настроил поиск пользователей в базе данных;
+   * подключил мидлвару Web-socket, чтобы сообщения появлялись без обновления страницы;
+   * проработал состояние интерфейса для активного чата;
 
-### `npm start`
+## Реализованный функционал
+   * регистрация и авторизация пользователя;
+   * главная страница: список уже созданных чатов (при регистрации пуст), поле для поиска пользователя по имени/имейлу, аватар в верхнем правом углу -> открывается модальное окно с личным кабинетом;
+   * список чатов: уже существующие чаты с пользователя, отображается последнее сообщение и аватар; 
+   * поиск пользователя: при успешном поиске появляется карточка, при нажатии на нее происходит переход в чат; 
+   * чат: отправка сообщения, оно отрисовывается мгновенно, без перезагрузки страницы, активный чат выделяется в списке чатов;
+   * модальное окно - личный кабинет: редактирование имени, пароля, аватара. Кнопка выхода.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Планы по доработке 
+   * Деплой проекта на Яндекс.Облако
+   * Настройка аутентификации
+   * Доработка чата, чтобы сразу открывался конец переписки
+   
+## Используемые технологии: 
+   * HTML5
+   * SCSS
+   * React
+   * Хуки (useState, useEffect, useParam), используются кастомные хуки (получение данных форм, работа с Cookies)
+   * React-Router
+   * Redux Toolkit
+   * TypeScript
+   * Express
+   * MongoDB
+   * Взаимодействие с сервером через API-запросы
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## Learn More
 
