@@ -47,6 +47,13 @@ const Chat = (): JSX.Element => {
     fetchData();
   }, [chatID]);
 
+  const formatTime = (dateStr: string | Date) => {
+    if (typeof dateStr === 'string') {
+      return dateStr.substring(11, 16); // "HH:MM"
+    }
+    return '';
+  };
+
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
@@ -64,6 +71,7 @@ const Chat = (): JSX.Element => {
                   isMine={message.sender === user?._id}
                   key={index}
                   text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
+                  time={formatTime(message.createdAt)}
                   />))}
           </div>
         </ul>

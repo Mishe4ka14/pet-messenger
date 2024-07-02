@@ -6,9 +6,10 @@ import styles from './message.module.scss';
 interface MessageProps {
   isMine: boolean;
   text: string,
+  time: string,
 }
 
-const Message: React.FC<MessageProps> = ({ isMine, text }) => {
+const Message: React.FC<MessageProps> = ({ isMine, text, time }) => {
   const [isRead, setIsRead] = useState(true);
 
   const handleRead = () => {
@@ -19,7 +20,7 @@ const Message: React.FC<MessageProps> = ({ isMine, text }) => {
     <div className={`${styles.message} ${isMine ? styles.mine : styles.theirs}`}>
       <p className={styles.text}>{text} </p>
       <div className={styles.data}>
-        <p className={styles.time}>22:56</p>
+        <p className={styles.time}>{time}</p>
         <div className={styles.status}>{isRead ? '✓✓' : '✓'}</div>
       </div>
     </div>

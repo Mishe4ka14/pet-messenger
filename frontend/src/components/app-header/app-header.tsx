@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
