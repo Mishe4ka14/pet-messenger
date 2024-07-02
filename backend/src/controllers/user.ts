@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 import bcrypt from 'bcrypt';
 import { getChatList } from './chat';
+import jwt from 'jsonwebtoken';
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
   const {
@@ -62,15 +63,19 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const userDoc = await User.findUserByCredentials(email, password);
+    const userDoc = await User.findUserByCredentials(email, password)
+      
 
     if (!userDoc) {
       return res.status(404).json({ message: 'Пользователь не найден' });
     }
 
+    // создаем токен
+    const token = jwt.sign({ _id: userDoc._id }, 'some-secret-key', { expiresIn: '4h' });
+    
     // Преобразуем объект Document в обычный JavaScript объект
     const user = userDoc.toJSON();
-
+    
     let chatListData: unknown = []; // По умолчанию пустой массив
 
     // Если у пользователя есть чаты, получаем данные для списка чата
@@ -85,7 +90,8 @@ export const loginUser = async (req: Request, res: Response) => {
       avatar: user.avatar,
       about: user.about,
       chats: user.chats,
-      chatListData: chatListData // Передаем данные списка чата в ответе
+      chatListData: chatListData, // Передаем данные списка чата в ответе
+      token: token
     });
   } catch (error) {
     console.error('Ошибка при авторизации:', error);

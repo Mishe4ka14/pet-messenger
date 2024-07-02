@@ -47,6 +47,8 @@ const Chat = (): JSX.Element => {
     fetchData();
   }, [chatID]);
 
+
+  // обрезаем строку до нужного формата времени
   const formatTime = (dateStr: string | Date) => {
     if (typeof dateStr === 'string') {
       return dateStr.substring(11, 16); // "HH:MM"
