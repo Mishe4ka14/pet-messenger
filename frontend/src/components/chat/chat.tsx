@@ -31,7 +31,7 @@ const Chat = (): JSX.Element => {
       if (chatID) {
         try {
           Cookies.remove('foundUser');
-          const data = await dispatch(getChat(chatID)) as unknown as IChatAndUserResponse;
+          const data = await dispatch(getChat(chatID, user?._id)) as unknown as IChatAndUserResponse;
 
           // Получаем второго пользователя для загрузки информации
           const secondUser = getUserFromCookie<TUser>('foundUser');
@@ -47,6 +47,15 @@ const Chat = (): JSX.Element => {
     fetchData();
   }, [chatID]);
 
+
+  // обрезаем строку до нужного формата времени
+  const formatTime = (dateStr: string | Date) => {
+    if (typeof dateStr === 'string') {
+      return dateStr.substring(11, 16); // "HH:MM"
+    }
+    return '';
+  };
+
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
@@ -56,17 +65,20 @@ const Chat = (): JSX.Element => {
           <p className={styles.about}>{foundUser?.about}</p>
         </div>
       </div>
+      <div className={styles.chat_and_chatInput}>
         <ul className={`${styles.scroll} custom-scroll`}>
-      <div className={`${styles.container}`}>
-      {chatMessages.map((message: IMessage, index) => (
-        <Message
-              isMine={message.sender === user?._id}
-              key={index}
-              text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
-              />))}
-      </div>
+          <div className={`${styles.container}`}>
+          {chatMessages.map((message: IMessage, index) => (
+            <Message
+                  isMine={message.sender === user?._id}
+                  key={index}
+                  text={typeof message.text === 'string' ? message.text : message.text.exampleKey}
+                  time={formatTime(message.createdAt)}
+                  />))}
+          </div>
         </ul>
         { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
+      </div>
     </div>
   );
 };

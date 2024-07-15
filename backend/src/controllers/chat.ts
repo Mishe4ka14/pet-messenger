@@ -44,14 +44,14 @@ export const createChat = async (req: Request, res: Response) => {
 export const getChat = async (req: Request, res: Response) => {
   try {
     const { chatID } = req.params;
+    const { userID } = req.query;
 
     const chat = await Chat.findById(chatID);
     if (!chat) {
       return res.status(404).json({ error: 'Чат не найден' });
     }
 
-    const secondUserID = chat.users[1]; // Получаем айди второго пользователя
-
+    const secondUserID = chat.users.find(id => id.toString() !== userID);
     const secondUser = await User.findById(secondUserID);
     if (!secondUser) {
       return res.status(404).json({ error: 'Второй пользователь не найден' });

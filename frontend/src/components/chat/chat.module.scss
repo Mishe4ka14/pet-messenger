@@ -1,8 +1,10 @@
 .chat {
-  display: grid;
-  grid-template-rows: 2fr 600px 1fr; 
-  height: 100%;
-  margin-left: 70px;
+  margin-left: 50px;
+  background-image: url(../../assets/JIGHT-FONE-OWL.jpg);
+  background-size: cover;
+  padding-right: 18vw;
+  padding-bottom: 9.9vh;
+  padding-left: 20px;
 }
 
 .container {
@@ -15,6 +17,26 @@
   justify-content: left;
   align-items: center;
   gap: 2%;
+  background-color: white;
+  max-width: 300px;
+  border-radius: 30px;
+  border: 1px solid black;
+  // background: linear-gradient(to right, #ffcccc, #ccffcc);;
+  background: linear-gradient(45deg, #ffcccc, #ccffcc, #ccccff, #ffccff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .info {
@@ -29,6 +51,11 @@
   padding: 0;
 }
 
+.about {
+  margin: 5px 0;
+  padding: 0;
+}
+
 .subtitle {
   font-size: 14px;
   margin: 0;
@@ -36,10 +63,19 @@
 }
 
 .scroll {
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    max-height: 67vh;
-    overflow: auto;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.chat_and_chatInput {
+  // background-color: aqua;
+  display: grid;
+  grid-template-rows: 68vh; 
+  height: 100%;
+  margin-left: 200px;
+  padding-top: 20px;
 }

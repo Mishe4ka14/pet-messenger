@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import ChatListItem from '../chat-list-item/chat-list-item';
 import styles from './chst-list.module.scss';
@@ -11,7 +11,7 @@ import getUserFromCookie from '../../hooks/cookie-parser';
 
 const ChatList = (): JSX.Element => {
   const [chatData, setChatdata] = useState<IUser | null | undefined>();
-
+  const activeChatId = useParams();
   const chatItems = chatData?.chatListData ?? [];
 
   useEffect(() => {
@@ -31,7 +31,8 @@ const ChatList = (): JSX.Element => {
           key={index}
           avatar={chat.userAvatar}
           name={chat.userName}
-          lastMess={chat?.lastMess ? chat?.lastMess : 'alskdjb KBBBOI aodshb OBoiad '}
+          lastMess={chat.lastMessageText}
+          isActive={activeChatId.chatID === chat._id}
         />
       </Link>
     ))}

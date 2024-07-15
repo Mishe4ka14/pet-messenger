@@ -56,7 +56,7 @@ const StartPanel = (): JSX.Element => {
       <div className={styles.panel}>
         <img className={styles.pick} src={startPick}/>
         <div className={styles.container}>
-          <h2 className={styles.text}>Start a new chat or select from the list to send Hedwik</h2>
+          <h2 className={styles.text}>Start a new chat or select from the list to send Hedwig</h2>
         </div>
       </div>
       <form className={styles.search_input_container} onSubmit={handleUserSearch}>

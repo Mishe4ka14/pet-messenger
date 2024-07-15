@@ -8,10 +8,14 @@ import styles from './chat-list-item.module.scss';
     avatar: string;
     name: string;
     lastMess: string;
+    isActive: boolean;
   }
 
-const ChatListItem = ({ avatar, name, lastMess }: Chat): JSX.Element => (
-    <div className={styles.container}>
+const ChatListItem = ({
+  avatar, name, lastMess, isActive,
+}: Chat): JSX.Element => {
+  return (
+    <div className={`${styles.container} ${isActive ? styles.container_active : ''}`}>
       <Avatar src={avatar} sx={{ width: 60, height: 60 }}/>
       <div className={styles.box}>
         <h3 className={styles.name}>{name}</h3>
@@ -19,6 +23,7 @@ const ChatListItem = ({ avatar, name, lastMess }: Chat): JSX.Element => (
       </div>
       <p>3h</p>
     </div>
-);
+  );
+};
 
 export default ChatListItem;
