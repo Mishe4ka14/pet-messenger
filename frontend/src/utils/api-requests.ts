@@ -3,7 +3,7 @@ import {
 } from '../services/types/types';
 
 export const API_URL: string = 'https://api.hedwig.nomoredomainswork.ru';
-export const WSS_URL: string = 'ws://api.hedwig.nomoredomainswork.ru/';
+export const WSS_URL: string = 'ws://api.hedwig.nomoredomainswork.ru';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
