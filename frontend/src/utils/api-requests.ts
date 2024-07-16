@@ -2,8 +2,8 @@ import {
   IUser, IRegisterResponse, ISearchUser, ILoginInfo, IUpdateUserInfo, IChatOwners, IChatAndUserResponse,
 } from '../services/types/types';
 
-export const API_URL: string = 'http://localhost:3000/';
-export const WSS_URL: string = 'ws://localhost:3000/';
+export const API_URL: string = 'http://api.hedwig.nomoredomainswork.ru/';
+export const WSS_URL: string = 'ws://api.hedwig.nomoredomainswork.ru/';
 
 const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
