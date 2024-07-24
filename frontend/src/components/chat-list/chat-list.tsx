@@ -14,7 +14,6 @@ const ChatList = (): JSX.Element => {
   const [chatData, setChatdata] = useState<IUser | null | undefined>();
   const activeChatId = useParams();
   const chatItems = chatData?.chatListData ?? [];
-  const day = 'day';
 
   useEffect(() => {
     const user = getUserFromCookie<IUser>('user');

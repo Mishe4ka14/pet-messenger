@@ -4,6 +4,8 @@ import {
 
 // export const API_URL: string = 'https://api.hedwig.nomoredomainswork.ru/';
 // export const WSS_URL: string = 'wss://api.hedwig.nomoredomainswork.ru/';
+
+// УРЛЫ ДЛЯ ЛОКАЛЬНОГО ТЕСТА, НЕ УДАЛЯТЬ
 export const API_URL: string = 'http://localhost:3000/';
 export const WSS_URL: string = 'ws://localhost:3000/';
 

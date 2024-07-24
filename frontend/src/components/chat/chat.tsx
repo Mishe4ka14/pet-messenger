@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from '../../hooks/hooks';
 import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
@@ -14,6 +14,7 @@ import { getChat } from '../../lib/features/chat/chat-api';
 import Cookies from 'js-cookie';
 import getUserFromCookie from '../../hooks/cookie-parser';
 import formatTime from '../../hooks/format-time';
+import { WSS_URL } from '../../utils/api-requests';
 
 const Chat = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -21,12 +22,12 @@ const Chat = (): JSX.Element => {
   const [foundUser, setFoundUser] = useState<TUser | null>(null);
   const { chatID } = useParams();
   const user = getUserFromCookie<TUser>('user');
+  const wsRef = useRef<WebSocket | null>(null);
 
   const handleNewMessage = (message: IMessage) => {
     // Обработка нового сообщения и его добавление в список сообщений чата
     setChatMessages((prevMessages) => [...prevMessages, message]);
   };
-
 
   //получаем сообщения чата по ChatID
   useEffect(() => {
@@ -50,6 +51,25 @@ const Chat = (): JSX.Element => {
     fetchData();
   }, [chatID]);
 
+  useEffect(() => {
+    const ws = new WebSocket(`${WSS_URL}/chat/${chatID}`);
+    wsRef.current = ws;
+
+    ws.addEventListener('open', () => {
+      console.log('WebSocket connection established');
+    });
+
+    ws.addEventListener('message', (event) => {
+      const newMessage = JSON.parse(event.data);
+      handleNewMessage(newMessage);
+    });
+
+    // Очищаем обработчик события при размонтировании компонента
+    return () => {
+      ws.close();
+    };
+  }, [chatID]);
+
   return (
     <div className={styles.chat}>
       <div className={styles.profile}>
@@ -71,7 +91,7 @@ const Chat = (): JSX.Element => {
                   />))}
           </div>
         </ul>
-        { chatID && <ChatInput chatID={chatID} onNewMessage={handleNewMessage}/>}
+        { chatID && <ChatInput chatID={chatID} ws={wsRef.current} onNewMessage={handleNewMessage}/>}
       </div>
     </div>
   );

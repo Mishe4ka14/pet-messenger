@@ -4,11 +4,11 @@ import { Avatar, TextField } from '@mui/material';
 import { useState, useRef, useEffect } from 'react';
 import styles from './chat-input.module.scss';
 import { IMessage, IUser } from '../../services/types/types';
-import { WSS_URL } from '../../utils/api-requests';
 import getUserFromCookie from '../../hooks/cookie-parser';
 
 interface Props {
   chatID: string,
+  ws: WebSocket | null,
   onNewMessage: (message: IMessage) => void;
 }
 
@@ -16,53 +16,14 @@ interface TMess extends IMessage {
   chatID: string
 }
 
-const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
+const ChatInput = ({ chatID, ws, onNewMessage }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState('');
 
   const user = getUserFromCookie<IUser>('user');
-  const wsRef = useRef<WebSocket | null>(null);
-
-  useEffect(() => {
-    const ws = new WebSocket(`${WSS_URL}/chat/${chatID}`);
-    wsRef.current = ws;
-
-    ws.addEventListener('open', () => {
-      console.log('WebSocket connection established');
-    });
-
-    // Убедитесь, что обработчик события message добавляется каждый раз при монтировании компонента
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-        console.log('WebSocket connection closed');
-      }
-    };
-  }, [chatID]);
-
-  // Добавляем обработчик события message при каждом монтировании компонента
-  useEffect(() => {
-    if (!wsRef.current) return () => {};
-
-    const handleMessage = (event: MessageEvent) => {
-      console.log('Received message:', event.data);
-      const newMessage = JSON.parse(event.data);
-      // Обновляем состояние чата, чтобы отобразить новое сообщение
-      onNewMessage(newMessage);
-    };
-
-    wsRef.current.addEventListener('message', handleMessage);
-
-    // Очищаем обработчик события при размонтировании компонента
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.removeEventListener('message', handleMessage);
-      }
-    };
-  }, []);
 
   const sendMessage = (event: React.KeyboardEvent<HTMLInputElement> | React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!wsRef.current) return;
+    if (!ws) return;
     if (inputValue.trim() === '') return;
 
     const message: TMess = {
@@ -72,7 +33,7 @@ const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
       chatID,
     };
 
-    wsRef.current.send(JSON.stringify(message));
+    ws.send(JSON.stringify(message));
     setInputValue('');
   };
 
@@ -107,4 +68,5 @@ const ChatInput = ({ chatID, onNewMessage }: Props): JSX.Element => {
     </div>
   );
 };
+
 export default ChatInput;
