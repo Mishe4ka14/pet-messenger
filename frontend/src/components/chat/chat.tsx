@@ -13,6 +13,7 @@ import {
 import { getChat } from '../../lib/features/chat/chat-api';
 import Cookies from 'js-cookie';
 import getUserFromCookie from '../../hooks/cookie-parser';
+import formatTime from '../../hooks/format-time';
 
 const Chat = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const Chat = (): JSX.Element => {
     setChatMessages((prevMessages) => [...prevMessages, message]);
   };
 
+
+  //получаем сообщения чата по ChatID
   useEffect(() => {
     const fetchData = async () => {
       if (chatID) {
@@ -46,15 +49,6 @@ const Chat = (): JSX.Element => {
 
     fetchData();
   }, [chatID]);
-
-
-  // обрезаем строку до нужного формата времени
-  const formatTime = (dateStr: string | Date) => {
-    if (typeof dateStr === 'string') {
-      return dateStr.substring(11, 16); // "HH:MM"
-    }
-    return '';
-  };
 
   return (
     <div className={styles.chat}>

@@ -9,10 +9,11 @@ import styles from './chat-list-item.module.scss';
     name: string;
     lastMess: string;
     isActive: boolean;
+    time: string,
   }
 
 const ChatListItem = ({
-  avatar, name, lastMess, isActive,
+  avatar, name, lastMess, isActive, time,
 }: Chat): JSX.Element => {
   return (
     <div className={`${styles.container} ${isActive ? styles.container_active : ''}`}>
@@ -21,7 +22,7 @@ const ChatListItem = ({
         <h3 className={styles.name}>{name}</h3>
         <p className={styles.text}>{lastMess}</p>
       </div>
-      <p>3h</p>
+      <p>{time}</p>
     </div>
   );
 };

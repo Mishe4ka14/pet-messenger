@@ -28,6 +28,7 @@ export interface IUser extends IProfileInfo {
     userName: string,
     _id: string,
     lastMessageText: string,
+    lastMessageCreatedAt: string,
     isActive: boolean,
   }[];
 }
