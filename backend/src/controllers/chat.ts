@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import Chat from '../models/chat';
 import User from '../models/user';
+import mongoose from 'mongoose';
 
+// создаем новый чат
 export const createChat = async (req: Request, res: Response) => {
   const { firstID, secondID } = req.params;
 
@@ -10,16 +12,14 @@ export const createChat = async (req: Request, res: Response) => {
   }
 
   try {
-    //проверка на существование чата между пользователями
     let chat = await Chat.findOne({
       users: { $all: [firstID, secondID] }
-    }).hint({ users: 1 }); 
+    }).hint({ users: 1 });
 
     if (chat) {
       return res.status(200).json(chat);
     }
 
-    // создание нового чата
     chat = await Chat.create({
       users: [firstID, secondID],
       messages: []
@@ -29,7 +29,6 @@ export const createChat = async (req: Request, res: Response) => {
       throw new Error('Ошибка при создании чата');
     }
 
-    // обновление списков чатов у пользователей
     await Promise.all([
       User.findByIdAndUpdate(firstID, { $push: { chats: chat._id } }),
       User.findByIdAndUpdate(secondID, { $push: { chats: chat._id } })
@@ -41,6 +40,8 @@ export const createChat = async (req: Request, res: Response) => {
   }
 };
 
+
+// переходим в конкретный чат по ID
 export const getChat = async (req: Request, res: Response) => {
   try {
     const { chatID } = req.params;
@@ -65,43 +66,47 @@ export const getChat = async (req: Request, res: Response) => {
   }
 };
 
-// получаем необходимую информацию для списка чатов
+
+//находим в БД первые сообщения для списка чатов
 export const getChatList = async (chatListIDs: string[], userId: string) => {
   try {
     if (!chatListIDs || chatListIDs.length === 0) {
       throw new Error('Необходимо передать идентификаторы чатов');
     }
 
+    // Преобразуем chatListIDs в массив ObjectId
+    const objectIdArray = chatListIDs.map(id => new mongoose.Types.ObjectId(id));
+
     // Ищем чаты по идентификаторам с использованием агрегации
     const data = await Chat.aggregate([
-      { $match: { _id: { $in: chatListIDs } } },
-      { $unwind: '$users' },
-      { $match: { users: { $ne: userId } } }, 
+      { $match: { _id: { $in: objectIdArray } } },
       {
         $lookup: {
           from: 'users',
           localField: 'users',
           foreignField: '_id',
-          as: 'user'
-        }
-      },
-      {
-        $addFields: {
-          lastMessage: { $arrayElemAt: [{ $slice: ['$messages', -1] }, 0] }
+          as: 'usersInfo'
         }
       },
       {
         $project: {
           _id: 1,
-          user: { $arrayElemAt: ['$user', 0] },
-          lastMessage: 1
+          users: 1,
+          usersInfo: {
+            $filter: {
+              input: '$usersInfo',
+              as: 'user',
+              cond: { $ne: ['$$user._id', new mongoose.Types.ObjectId(userId)] }
+            }
+          },
+          lastMessage: { $arrayElemAt: ['$messages', -1] }
         }
       },
       {
         $project: {
           _id: 1,
-          userName: '$user.name',
-          userAvatar: '$user.avatar',
+          userName: { $arrayElemAt: ['$usersInfo.name', 0] },
+          userAvatar: { $arrayElemAt: ['$usersInfo.avatar', 0] },
           lastMessageText: '$lastMessage.text',
           lastMessageCreatedAt: '$lastMessage.createdAt'
         }
@@ -123,3 +128,24 @@ export const getChatList = async (chatListIDs: string[], userId: string) => {
   }
 }
 
+// получаем список чатов и первых сообщений по переданным ID
+export const handleGetChatList = async (req: Request, res: Response) => {
+  try {
+    const { chatListIDs, userId } = req.query;
+
+    if (!chatListIDs || !userId) {
+      return res.status(400).json({ error: 'chatListIDs и userId являются обязательными параметрами' });
+    }
+
+    const idsArray: string[] = (chatListIDs as string).split(',');
+    const userIdString: string = userId as string;
+
+    //получаем первые сообщения по ID
+    const chats = await getChatList(idsArray, userIdString);
+
+    return res.json(chats);
+  } catch (error) {
+    console.error('Ошибка при получении списка чатов:', error);
+    return res.status(500).json({ error: 'Ошибка при получении списка чатов' });
+  }
+};

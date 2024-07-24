@@ -3,7 +3,7 @@
 import Cookies from 'js-cookie';
 import { IChatOwners } from '../../../services/types/types';
 import { AppThunk, AppDispatch } from '../../../services/types';
-import { createChatRequest, getChatRequest } from '../../../utils/api-requests';
+import { createChatRequest, getChatListRequest, getChatRequest } from '../../../utils/api-requests';
 
 export const createChat: AppThunk = (userID: IChatOwners) => {
   return async (dispatch: AppDispatch) => {
@@ -16,6 +16,7 @@ export const createChat: AppThunk = (userID: IChatOwners) => {
   };
 };
 
+// получаем конкретный чат
 export const getChat: AppThunk = (chatID: string | undefined, userID) => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -26,6 +27,18 @@ export const getChat: AppThunk = (chatID: string | undefined, userID) => {
       return res;
     } catch (error) {
       throw new Error('Не получилось создать чат, попробуйте еще раз!');
+    }
+  };
+};
+
+// получаем список чаток и первых сообщений
+export const getChatList: AppThunk = (chatIDs, userID: string) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const data = await getChatListRequest(chatIDs, userID);
+      return data;
+    } catch (error) {
+      throw new Error('Не получилось загрузить чаты, попробуйте еще раз!');
     }
   };
 };

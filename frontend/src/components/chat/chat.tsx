@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* eslint-disable no-unused-vars */
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
@@ -8,7 +7,7 @@ import ChatInput from '../chat-input/chat-input';
 import styles from './chat.module.scss';
 import Message from '../message/message';
 import {
-  IChatAndUserResponse, IMessage, IUser, TUser,
+  IChatAndUserResponse, IMessage, TUser,
 } from '../../services/types/types';
 import { getChat } from '../../lib/features/chat/chat-api';
 import Cookies from 'js-cookie';

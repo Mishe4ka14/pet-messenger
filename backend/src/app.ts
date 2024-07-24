@@ -4,7 +4,7 @@ import { createUser, loginUser } from './controllers/user';
 import userRouter from './routes/user';
 import chatRouter from './routes/chat';
 import http from 'http'; 
-import { setupWebSocketServer } from './sockets/websocket-server';
+import { setupWebSocketServer } from './sockets/websocket-chat-server';
 
 const cors = require('cors');
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Avatar, TextField } from '@mui/material';
-import { useState, useRef, useEffect } from 'react';
+import { TextField } from '@mui/material';
+import { useState } from 'react';
 import styles from './chat-input.module.scss';
 import { IMessage, IUser } from '../../services/types/types';
 import getUserFromCookie from '../../hooks/cookie-parser';
@@ -50,7 +50,6 @@ const ChatInput = ({ chatID, ws, onNewMessage }: Props): JSX.Element => {
 
   return (
     <div className={styles.box}>
-      {/* <Avatar src={user?.avatar} sx={{ width: 70, height: 70 }} /> */}
       <form className={styles.container} onSubmit={sendMessage}>
         <TextField
           value={inputValue}

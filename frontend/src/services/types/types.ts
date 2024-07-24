@@ -23,14 +23,14 @@ export interface IUser extends IProfileInfo {
   email: string;
   _id?: string;
   chats?: [];
-  chatListData?: {
-    userAvatar: string,
-    userName: string,
-    _id: string,
-    lastMessageText: string,
-    lastMessageCreatedAt: string,
-    isActive: boolean,
-  }[];
+}
+
+export interface IChatListData {
+  userAvatar: string;
+  userName: string;
+  _id: string;
+  lastMessageText: string;
+  lastMessageCreatedAt: string;
 }
 
 export interface ISearchUser {

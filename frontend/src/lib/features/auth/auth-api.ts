@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import Cookies from 'js-cookie';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   IUser, ISearchUser,
 } from '../../../services/types/types';
