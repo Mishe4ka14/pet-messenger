@@ -67,7 +67,7 @@ const Profile = (): JSX.Element => {
         <Avatar className={styles.avatar} sx={{ width: 100, height: 100 }} src={user?.avatar}/>
         <div className={styles.name}>
           <h3 className={styles.title}>{user?.name}</h3>
-          <p className={styles.subtitle}>Koroleva semi korolevstv</p>
+          <p className={styles.subtitle}>{user?.about}</p>
         </div>
       </div>
       <form className={styles.edit} onSubmit={handleChangeInfo}>

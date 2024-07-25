@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { Avatar } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './chat-list-item.module.scss';
 import { WSS_URL } from '../../utils/api-requests';
+import formatTime from '../../hooks/format-time';
 
 interface Chat {
   avatar: string;
@@ -18,7 +19,7 @@ const ChatListItem = ({
   avatar, name, lastMess, isActive, time, chatID,
 }: Chat): JSX.Element => {
   const [lastMessage, setLastMessage] = useState(lastMess);
-  // const [lastMessageTime, setLastMessageTime] = useState(time);
+  const [lastMessageTime, setLastMessageTime] = useState(time);
 
   useEffect(() => {
     // Создаем WebSocket-соединение для этого чата
@@ -28,7 +29,7 @@ const ChatListItem = ({
     ws.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
       setLastMessage(newMessage.text);
-      // setLastMessage(newMessage.time);
+      setLastMessageTime(formatTime(newMessage.createdAt));
     };
 
     return () => {
@@ -37,14 +38,17 @@ const ChatListItem = ({
   }, [chatID, lastMess]);
 
   return (
-    <div className={`${styles.container} ${isActive ? styles.container_active : ''}`}>
-      <Avatar src={avatar} sx={{ width: 60, height: 60 }} />
-      <div className={styles.box}>
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.text}>{lastMessage}</p>
-      </div>
-      <p>{time}</p>
+    <React.Fragment>
+    <div
+      className={`${styles.container} ${isActive ? styles.container_active : ''}`}>
+        <Avatar src={avatar} sx={{ width: 60, height: 60 }} />
+        <div className={styles.box}>
+          <h3 className={styles.name}>{name}</h3>
+          <p className={styles.text}>{lastMessage}</p>
+        </div>
+        <p>{lastMessageTime}</p>
     </div>
+  </React.Fragment>
   );
 };
 

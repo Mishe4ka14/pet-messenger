@@ -1,13 +1,113 @@
-/*  eslint-disable */
+/* eslint-disable no-undef */
+// /*  eslint-disable */
+// import { useNavigate, Link } from 'react-router-dom';
+// import Input from '@mui/joy/Input';
+// import FormControl from '@mui/joy/FormControl';
+// import { FormLabel } from '@mui/joy';
+// import FormHelperText from '@mui/joy/FormHelperText';
+// import styles from './registration-page.module.scss';
+// import { useDispatch } from '../../hooks/hooks';
+// import useInputHandlers from '../../hooks/use-input';
+// import icon from '../../assets/svg (1).svg';
+// import { registerRequest } from '../../lib/features/auth/auth-api';
+// import { AppDispatch, AppThunk } from '../../services/types';
+
+// const RegistrationPage = (): JSX.Element => {
+//   const dispatch: AppDispatch = useDispatch();
+//   const navigate = useNavigate();
+
+//   const { values, handleInputChange } = useInputHandlers({
+//     email: '', password: '', name: '',
+//   });
+
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     if (values.email.length > 0 && values.name.length > 0 && values.password.length > 0) {
+//       const userData = {
+//         email: values.email,
+//         name: values.name,
+//         password: values.password,
+//       };
+//       console.log('все гуд');
+//       try {
+//         await dispatch(registerRequest(userData) as AppThunk);
+//         navigate('/');
+//       } catch (error: any) {
+//         alert(error.message);
+//       }
+//     }
+//   };
+
+//   return (
+//     <>
+//       <form className={styles.page} onSubmit={handleSubmit}>
+//       <img className={styles.owl} src={icon}/>
+//         <h2 className={styles.text}>Create your account</h2>
+//         <FormControl>
+//           <FormLabel>Email</FormLabel>
+//           <Input
+//             required
+//             type="email"
+//             name="email"
+//             onChange={handleInputChange}
+//             value={values.email}
+//             placeholder="Email"
+//             variant="soft"
+//             sx={{ width: 300, height: 50 }}
+//             className={styles.input}
+//             />
+//         </FormControl>
+//         <FormControl>
+//           <FormLabel>Name</FormLabel>
+//           <Input
+//             required
+//             type="name"
+//             name="name"
+//             onChange={handleInputChange}
+//             value={values.name}
+//             placeholder="Name"
+//             variant="soft"
+//             sx={{ width: 300, height: 50 }}
+//             className={styles.input}
+//             />
+//           <FormHelperText>You can always change it later</FormHelperText>
+//         </FormControl>
+//         <FormControl>
+//           <FormLabel>Password</FormLabel>
+//           <Input
+//               required
+//               type="password"
+//               name="password"
+//               onChange={handleInputChange}
+//               value={values.password}
+//               placeholder="Email"
+//               variant="soft"
+//               sx={{ width: 300, height: 50 }}
+//               className={styles.input}
+//             />
+//             <FormHelperText>Already have an account?
+//               <Link className={styles.lil_text} to='/login'>
+//                 <p>Log in</p>
+//               </Link>
+//             </FormHelperText>
+//         </FormControl>
+//           <button className={styles.button} type='submit'>Continue</button>
+//       </form>
+//     </>
+//   );
+// };
+
+// export default RegistrationPage;
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '@mui/joy/Input';
+import Textarea from '@mui/joy/Textarea';
 import FormControl from '@mui/joy/FormControl';
-import { FormLabel } from '@mui/joy';
-import FormHelperText from '@mui/joy/FormHelperText';
+import { FormLabel, FormHelperText } from '@mui/joy';
 import styles from './registration-page.module.scss';
-import { useDispatch } from '../../hooks/hooks';
-import useInputHandlers from '../../hooks/use-input';
 import icon from '../../assets/svg (1).svg';
+import { useDispatch } from '../../hooks/hooks';
 import { registerRequest } from '../../lib/features/auth/auth-api';
 import { AppDispatch, AppThunk } from '../../services/types';
 
@@ -15,83 +115,164 @@ const RegistrationPage = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { values, handleInputChange } = useInputHandlers({
-    email: '', password: '', name: '',
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    about: '',
+    avatar: '',
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (values.email.length > 0 && values.name.length > 0 && values.password.length > 0) {
-      const userData = {
-        email: values.email,
-        name: values.name,
-        password: values.password,
-      };
-      console.log('все гуд');
+  // шаги для отображения полей регистрации, 1 - для основной инфы, 2 - для дополнительной
+  const [step, setStep] = useState(1);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [stepOneDisabled, setStepOneDisabled] = useState(true);
+  const [stepTwoDisabled, setStepTwoDisabled] = useState(true);
+
+  useEffect(() => {
+    setErrorMessage('');
+    const usernameValid = userData.name.length >= 3 && userData.name.length <= 20;
+    const passwordValid = userData.password.length >= 3;
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email);
+    const descriptionValid = userData.about.length < 200;
+    const avatarValid = userData.avatar ? /^(ftp|http|https):\/\/[^ "]+$/.test(userData.avatar) : true;
+
+    setStepOneDisabled(!usernameValid || !passwordValid || !emailValid);
+    setStepTwoDisabled(!descriptionValid || !avatarValid);
+  }, [step, userData]);
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name } = e.target;
+    const { value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  };
+
+  const handleBackToFirstStep = () => setStep(1);
+
+  const handleSubmit = async () => {
+    if (step === 1) {
+      setStep(2);
+    } else {
       try {
         await dispatch(registerRequest(userData) as AppThunk);
         navigate('/');
       } catch (error: any) {
-        alert(error.message);
+        setErrorMessage(error.message);
       }
     }
   };
 
   return (
     <>
-      <form className={styles.page} onSubmit={handleSubmit}>
-      <img className={styles.owl} src={icon}/>
-        <h2 className={styles.text}>Create your account</h2>
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Input
-            required
-            type="email"
-            name="email"
-            onChange={handleInputChange}
-            value={values.email}
-            placeholder="Email"
-            variant="soft"
-            sx={{ width: 300, height: 50 }}
-            className={styles.input}
-            />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Name</FormLabel>
-          <Input
-            required
-            type="name"
-            name="name"
-            onChange={handleInputChange}
-            value={values.name}
-            placeholder="Name"
-            variant="soft"
-            sx={{ width: 300, height: 50 }}
-            className={styles.input}
-            />
-          <FormHelperText>You can always change it later</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Password</FormLabel>
-          <Input
-              required
-              type="password"
-              name="password"
-              onChange={handleInputChange}
-              value={values.password}
-              placeholder="Email"
-              variant="soft"
-              sx={{ width: 300, height: 50 }}
-              className={styles.input}
-            />
-            <FormHelperText>Already have an account?
-              <Link className={styles.lil_text} to='/login'>
-                <p>Log in</p>
-              </Link>
-            </FormHelperText>
-        </FormControl>
-          <button className={styles.button} type='submit'>Continue</button>
-      </form>
+      <div className={`${styles.page}`}>
+        <img className={styles.owl} src={icon} alt="Icon" />
+        <h2 className={styles.text}>{`Регистрация ${step === 1 ? '1/2' : '2/2'}`}</h2>
+        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+          {step === 1 ? (
+            <>
+              <FormControl>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  required
+                  type="email"
+                  name="email"
+                  onChange={onChangeInput}
+                  value={userData.email}
+                  placeholder="Email"
+                  variant="soft"
+                  sx={{ width: 300, height: 50 }}
+                  className={styles.input}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  required
+                  type="text"
+                  name="name"
+                  onChange={onChangeInput}
+                  value={userData.name}
+                  placeholder="Name"
+                  variant="soft"
+                  sx={{ width: 300, height: 50 }}
+                  className={styles.input}
+                />
+                <FormHelperText>You can always change it later</FormHelperText>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  required
+                  type="password"
+                  name="password"
+                  onChange={onChangeInput}
+                  value={userData.password}
+                  placeholder="Password"
+                  variant="soft"
+                  sx={{ width: 300, height: 50 }}
+                  className={styles.input}
+                />
+              </FormControl>
+            </>
+          ) : (
+            <>
+              <FormControl>
+                <FormLabel>About</FormLabel>
+                <Textarea
+                  name="about"
+                  onChange={onChangeInput}
+                  value={userData.about}
+                  placeholder="Tell about yourself"
+                  variant="soft"
+                  sx={{ width: 300, height: 50 }}
+                  className={styles.input}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Avatar</FormLabel>
+                <Input
+                  name="avatar"
+                  onChange={onChangeInput}
+                  value={userData.avatar}
+                  placeholder="Insert here link to avatar"
+                  variant="soft"
+                  sx={{ width: 300, height: 50 }}
+                  className={styles.input}
+                />
+                <FormHelperText>You can always change it later in profile</FormHelperText>
+              </FormControl>
+            </>
+          )}
+          <button
+            type="button"
+            className={styles.button}
+            disabled={step === 1 ? stepOneDisabled : stepTwoDisabled}
+            onClick={handleSubmit}
+            >
+            {step === 1 ? 'Далее' : 'Зарегистрироваться'}
+          </button>
+          {step === 2 && (
+            <>
+              <span className={styles.error}>{errorMessage}</span>
+              <button
+                type="button"
+                className={styles.back_to_first_step}
+                onClick={handleBackToFirstStep}
+              >
+                Вернуться на первый шаг
+              </button>
+            </>
+          )}
+        </form>
+        <FormHelperText>Already have an account?
+          <Link to='/login' className={styles.lil_text}>
+            <p>Log in</p>
+          </Link>
+        </FormHelperText>
+      </div>
     </>
   );
 };
