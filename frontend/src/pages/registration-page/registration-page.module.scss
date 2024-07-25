@@ -1,3 +1,5 @@
+@import '../../styles-animations/animations.scss';
+
 .page {
   display: flex;
   flex-direction: column;
@@ -31,6 +33,22 @@
   }
 }
 
+.button_disabled {
+  background-color: grey;
+  color: rgb(2, 47, 89);
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 300px;
+  height: 40px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  &:hover {
+    animation: shake 0.5s;
+  }
+}
+
 .text {
   padding: 0;
   margin: 0;
@@ -58,7 +76,8 @@
 .back_to_first_step {
   background-color: white;
   color: rgb(2, 47, 89);
-  margin-top: 3%;
+  margin: 0;
+  padding: 0;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
@@ -68,4 +87,8 @@
   &:active {
     transform: scale(0.95);
   }
+}
+
+p {
+  margin: 0;
 }

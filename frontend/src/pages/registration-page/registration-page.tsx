@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// /*  eslint-disable */
+/*  eslint-disable */
 // import { useNavigate, Link } from 'react-router-dom';
 // import Input from '@mui/joy/Input';
 // import FormControl from '@mui/joy/FormControl';
@@ -110,6 +110,7 @@ import icon from '../../assets/svg (1).svg';
 import { useDispatch } from '../../hooks/hooks';
 import { registerRequest } from '../../lib/features/auth/auth-api';
 import { AppDispatch, AppThunk } from '../../services/types';
+import getRandomAvatar from '../../hooks/get-random-avatar';
 
 const RegistrationPage = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
@@ -127,18 +128,16 @@ const RegistrationPage = (): JSX.Element => {
   const [step, setStep] = useState(1);
   const [errorMessage, setErrorMessage] = useState('');
   const [stepOneDisabled, setStepOneDisabled] = useState(true);
-  const [stepTwoDisabled, setStepTwoDisabled] = useState(true);
 
   useEffect(() => {
     setErrorMessage('');
     const usernameValid = userData.name.length >= 3 && userData.name.length <= 20;
     const passwordValid = userData.password.length >= 3;
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email);
-    const descriptionValid = userData.about.length < 200;
-    const avatarValid = userData.avatar ? /^(ftp|http|https):\/\/[^ "]+$/.test(userData.avatar) : true;
+    // const descriptionValid = userData.about.length < 200;
+    // const avatarValid = userData.avatar ? /^(ftp|http|https):\/\/[^ "]+$/.test(userData.avatar) : true;
 
     setStepOneDisabled(!usernameValid || !passwordValid || !emailValid);
-    setStepTwoDisabled(!descriptionValid || !avatarValid);
   }, [step, userData]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -152,19 +151,31 @@ const RegistrationPage = (): JSX.Element => {
 
   const handleBackToFirstStep = () => setStep(1);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+  
     if (step === 1) {
       setStep(2);
     } else {
+      // Удаление пробелов и проверка, подставление дефолтных значений
+      const about = userData.about.trim();
+      const avatar = userData.avatar.trim();
+  
+      const userInfo = {
+        ...userData,
+        about: about || 'Hides some secrets',
+        avatar: avatar || getRandomAvatar(),
+      };
+  
       try {
-        await dispatch(registerRequest(userData) as AppThunk);
+        await dispatch(registerRequest(userInfo) as AppThunk);
         navigate('/');
       } catch (error: any) {
         setErrorMessage(error.message);
       }
     }
   };
-
+  
   return (
     <>
       <div className={`${styles.page}`}>
@@ -248,15 +259,15 @@ const RegistrationPage = (): JSX.Element => {
           )}
           <button
             type="button"
-            className={styles.button}
-            disabled={step === 1 ? stepOneDisabled : stepTwoDisabled}
+            className={stepOneDisabled ? styles.button_disabled : styles.button}
+            disabled={step === 1 ? stepOneDisabled : false}
             onClick={handleSubmit}
             >
             {step === 1 ? 'Далее' : 'Зарегистрироваться'}
           </button>
           {step === 2 && (
             <>
-              <span className={styles.error}>{errorMessage}</span>
+              {/* <span className={styles.error}>{errorMessage}</span> */}
               <button
                 type="button"
                 className={styles.back_to_first_step}
@@ -266,12 +277,12 @@ const RegistrationPage = (): JSX.Element => {
               </button>
             </>
           )}
+          <FormHelperText>Already have an account?
+            <Link to='/login' className={styles.lil_text}>
+              <p>Log in</p>
+            </Link>
+          </FormHelperText>
         </form>
-        <FormHelperText>Already have an account?
-          <Link to='/login' className={styles.lil_text}>
-            <p>Log in</p>
-          </Link>
-        </FormHelperText>
       </div>
     </>
   );
